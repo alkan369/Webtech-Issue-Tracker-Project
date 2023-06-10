@@ -91,8 +91,8 @@ export async function deleteProject(
     res: express.Response
 ): Promise<void> {
     try {
-        const projectToBeDeleted = await ProjectModel.findOneAndDelete({ title: req.params.projectName });
-        if (projectToBeDeleted) {
+        const projectToBeDeleted = await ProjectModel.findOneAndDelete({ projectName: req.params.projectName });
+        if (!projectToBeDeleted) {
             res.status(400).json({ 'message': 'No Project with this name' });
             return;
         }

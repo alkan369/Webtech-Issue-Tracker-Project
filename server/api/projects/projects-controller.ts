@@ -44,7 +44,7 @@ projectsController.get('/view_by_status/:status', async (req, res) =>{
 
     const ticketStatusIndex: number = validProjectStatus.indexOf(req.params.status);
     if(ticketStatusIndex === -1){
-        return res.status(400).json({'message': 'Invalid Ticket Status Input'});
+        return res.status(400).json({'message': 'Invalid Project Status Input'});
     }
     await getProjectByStatus(req, res);
 })
