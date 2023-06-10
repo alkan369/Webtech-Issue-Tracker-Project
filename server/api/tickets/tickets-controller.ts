@@ -4,20 +4,18 @@ import  { TicketModel } from '../../database/models/ticket.model';
 import mongoose from "mongoose";
 import { ProjectModel } from "../../database/models/project.model";
 import { UserModel } from "../../database/models/user.model";
+import { getTicketByStatus, getTicketByProjectName, getTicketByTitle, 
+    getTicketByAssignee, createTicket, updateTicket, deleteTicket, 
+    getAllTickets, getTicketWithNoProject, getTicketNotAsigned } from "../../database/statics/ticket.methods";
 // import { tickets } from "../pseudoDB";
 
 const ticketsController = Router();
 
-ticketsController.get('/', async (req, res) => {
-    try {
-        const tickets = await TicketModel.find();
-        return res.status(200).json(tickets);
-    } catch (error) {
-        return res.status(404).json({ message: error });
-    }
+ticketsController.get('/', async (req, res) => { // works
+    await getAllTickets(req, res);
 });
 
-ticketsController.get('/view_by_title/:title', async (req, res) => {
+ticketsController.get('/view_by_title/:title', async (req, res) => { //works
     // const searchedTicketID: string = req.params.title;
     // if (!searchedTicketID || searchedTicketID.length === 0) {
     //     return res.status(400).json({ 'message': 'Empty Ticket Id' });
@@ -28,48 +26,58 @@ ticketsController.get('/view_by_title/:title', async (req, res) => {
     // }
     // return await res.status(200).json(tickets[ticketIndex]);
         
-    try{
-        const ticket = await TicketModel.find({ title: req.params.title });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    await getTicketByTitle(req, res);
 });
 
-ticketsController.get('/view_by_project/:projectName', async (req, res) =>{
+ticketsController.get('/view_by_project/:projectName', async (req, res) =>{ // works
     // const searchedProjectName: string = req.params.projectName;
     // if(!searchedProjectId || searchedProjectId.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
     // }
     // const filteredTickets = await tickets.filter(tickets => tickets.projectId === searchedProjectId);
     // return res.status(200).json(filteredTickets);
-    try{
-        const ticket = await TicketModel.find({ projectName: req.params.projectName });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    
+    await getTicketByProjectName(req, res);
+    
 })
 
-ticketsController.get('/view_by_asignee/:assignedTo', async (req, res) =>{
+ticketsController.get('/view_by_project/', async (req, res) =>{ //works
+    // const searchedProjectName: string = req.params.projectName;
+    // if(!searchedProjectId || searchedProjectId.length === 0){
+    //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
+    // }
+    // const filteredTickets = await tickets.filter(tickets => tickets.projectId === searchedProjectId);
+    // return res.status(200).json(filteredTickets);
+    
+    await getTicketWithNoProject(req, res);
+    
+})
+
+ticketsController.get('/view_by_asignee/:assignedTo', async (req, res) =>{ // works
     // const searchedAsignedTo: string = req.params.assignedTo;
     // if(!searchedAsignedTo || searchedAsignedTo.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
     // }    
     // const filteredTickets = await tickets.filter(tickets => tickets.assignedTo === searchedAsignedTo);
     // return res.status(200).json(filteredTickets);
-    try{
-        const ticket = await TicketModel.find({ assignedTo: req.params.assignedTo });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    
+    await getTicketByAssignee(req, res);
+    
 })
 
-ticketsController.get('/view_by_status/:status', async (req, res) =>{
+ticketsController.get('/view_by_asignee/', async (req, res) =>{ // works
+    // const searchedAsignedTo: string = req.params.assignedTo;
+    // if(!searchedAsignedTo || searchedAsignedTo.length === 0){
+    //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
+    // }    
+    // const filteredTickets = await tickets.filter(tickets => tickets.assignedTo === searchedAsignedTo);
+    // return res.status(200).json(filteredTickets);
+    
+    await getTicketNotAsigned(req, res);
+    
+})
+
+ticketsController.get('/view_by_status/:status', async (req, res) =>{ // works
     // const searchedStatus: string = req.params.status;
     // if(!searchedStatus || searchedStatus.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Status Input'});
@@ -79,19 +87,22 @@ ticketsController.get('/view_by_status/:status', async (req, res) =>{
 
     const ticketStatusIndex: number = validTicketStatus.indexOf(req.params.status);
     if(ticketStatusIndex === -1){
-        return res.status(400).json({'message': 'Invalid Ticket Status Input'});
+         return res.status(400).json({message: 'Invalid Ticket Status Input'});
     }
-    try{
-        const ticket = await TicketModel.find({ status: req.params.status });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+
+    // try{
+    //     const ticket = await TicketModel.find({ status: req.params.status });
+    //     return res.status(200).json(ticket);
+    // } 
+    // catch (error) {
+    //     return res.status(404).json({ message: error });
+    // }
+    
+    await getTicketByStatus(req, res);
 })
 
 
-ticketsController.post('/create', async (req: TicketRequest, res) => {
+ticketsController.post('/create', async (req: TicketRequest, res) => { // works
     // const newTicketId: string = String(tickets.length + 1);
     // const newTicketTitle: string = req.body.title;
     // const newTicketProjectId: string = req.body.projectId ? req.body.projectId : '';    // is it ok not to have project ID
@@ -135,36 +146,60 @@ ticketsController.post('/create', async (req: TicketRequest, res) => {
     // }
 
     // check title
-    const projectName: string = req.body.projectName;
-    const assignedTo: string = req.body.assignedTo;
+    // const projectName: string = req.body.projectName;
+    // const assignedTo: string = req.body.assignedTo;
+    if (req.body.title) {
+        const ticket = await TicketModel.findOne({ title: req.body.title });
+        if (ticket) {
+            return res.status(404).json({ message: "There is a ticket with this title"});
+        }
+    }
+    
+    if (req.body.projectName) {
+        const project = await ProjectModel.findOne({ projectName: req.body.projectName});
+        if (!project) {
+            return res.status(404).json({ message: "No Project with This Name"});
+        }
+    }
+
+    if (req.body.assignedTo) {
+        const user = await UserModel.findOne({ username: req.body.assignedTo });
+        if (!user) {
+            return res.status(404).json({ message: "No User with This Username"})
+        }
+    }
 
     // check the other DB and check if objects are present
 
-    const newTicket = new TicketModel({
-        id: new mongoose.Types.ObjectId,
-        title: req.body.title,
-        projectName: projectName,
-        assignedTo: assignedTo,
-        description: req.body.description,
-        status: req.body.status,
-        priority: req.body.priority
-    });
+    // const newTicket = new TicketModel({
+    //     id: new mongoose.Types.ObjectId,
+    //     title: req.body.title,
+    //     projectName: projectName,
+    //     assignedTo: assignedTo,
+    //     description: req.body.description,
+    //     status: req.body.status,
+    //     priority: req.body.priority
+    // });
 
-    const validationError = newTicket.validateSync();
-    if (validationError) {
-        return res.status(400).json(validationError);
-    }
+    // const validationError = newTicket.validateSync();
+    // if (validationError) {
+    //     return res.status(400).json(validationError);
+    // }
 
-    try {
-        await newTicket.save();
-        return res.status(201).json(newTicket);
-    }
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    // try {
+    //     await newTicket.save();
+    //     return res.status(201).json(newTicket);
+    // }
+    // catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+
+    
+    await createTicket(req, res);
+    
 });
 
-ticketsController.put('/edit/:title', async (req, res) => {
+ticketsController.put('/edit/:title', async (req, res) => { // works
     // const ticketID = req.params.id;
     // if(!ticketID || ticketID.length === 0){
     //     return res.status(400).json({'message': 'No Entered Ticket Id'});
@@ -246,23 +281,25 @@ ticketsController.put('/edit/:title', async (req, res) => {
     }
 
     // check if enums for status and priority are validated
-    try {
-        const updateTicket = await TicketModel.findOneAndUpdate({ title: req.params.title },
-            { $set: 
-                { 
-                title: req.body.title, projectName: req.body.projectName, assignedTo: req.body.assignedTo, 
-                description: req.body.description, status: req.body.status, updateDate: new Date(), priority: req.body.priority
-                }
-            });
-        return res.status(200).json(updateTicket);
-    } 
-    catch (error) {
-        return res.status(400).json({ message: error });
-    }
-
+    // try {
+    //     const updateTicket = await TicketModel.findOneAndUpdate({ title: req.params.title },
+    //         { $set: 
+    //             { 
+    //             title: req.body.title, projectName: req.body.projectName, assignedTo: req.body.assignedTo, 
+    //             description: req.body.description, status: req.body.status, updateDate: new Date(), priority: req.body.priority
+    //             }
+    //         });
+    //     return res.status(200).json(updateTicket);
+    // } 
+    // catch (error) {
+    //     return res.status(400).json({ message: error });
+    // }
+ 
+    await updateTicket(req, res);
+    
 });
 
-ticketsController.delete('/delete/:title', async (req, res) => {
+ticketsController.delete('/delete/:title', async (req, res) => { // works
     // const searchedTicketId: string = req.params.id;
     // if(!searchedTicketId || searchedTicketId.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Id Input'});
@@ -286,17 +323,9 @@ ticketsController.delete('/delete/:title', async (req, res) => {
         //     }
         // }
         
-    try {
-        const deletedTicket = await TicketModel.findOneAndDelete({ title: req.params.title });
-        // if (deletedTicket) {
-        //     return res.status(400).json({ 'message': 'No Ticket Id Input' });
-        // }
-
-        return res.status(200).json(deletedTicket);
-    }
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    
+    await deleteTicket(req, res);
+    
 });
 
 export default ticketsController;

@@ -1,6 +1,6 @@
 import { Request } from "express"
 
-export const validTicketStatus = ['open', 'in progress', 'resolved'];
+export const validTicketStatus = ['Open', 'In progress', 'Resolved'];
 export const validTicketPriorities = ['Low', 'Medium', "High"];
 
 export interface Ticket{

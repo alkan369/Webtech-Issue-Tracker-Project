@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { getTicketByStatus } from '../statics/ticket.methods';
 
 export const TicketSchema = new Schema({
     id: Schema.Types.ObjectId,
