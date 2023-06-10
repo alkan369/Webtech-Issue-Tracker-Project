@@ -6,7 +6,7 @@ import { ProjectModel } from "../../database/models/project.model";
 import { UserModel } from "../../database/models/user.model";
 import { getTicketByStatus, getTicketByProjectName, getTicketByTitle, 
     getTicketByAssignee, createTicket, updateTicket, deleteTicket, 
-    getAllTickets, getTicketWithNoProject, getTicketNotAsigned } from "../../database/statics/ticket.methods";
+    getAllTickets, getTicketWithNoProject, getTicketNotAsigned } from "../../database/methods/ticket.methods";
 // import { tickets } from "../pseudoDB";
 
 const ticketsController = Router();

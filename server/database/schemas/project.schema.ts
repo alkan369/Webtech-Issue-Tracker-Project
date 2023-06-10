@@ -21,7 +21,7 @@ export const ProjectSchema = new Schema({
     },
     status: {
         type: Schema.Types.String,
-        required: true,
-        enum: ['in progress', 'done'],
+        default: "In progress",
+        enum: ['In progress', 'Done'],
     }
 })

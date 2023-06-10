@@ -3,17 +3,17 @@ import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from 
 import mongoose from "mongoose";
 import { ProjectModel } from "../../database/models/project.model";
 import { UserModel } from "../../database/models/user.model";
+import { getAllProjects, getProjectByName, getProjectByStatus,
+createProject, 
+updateProject,
+deleteProject} from "../../database/methods/project.methods";
+import { validProjectStatus } from "../../database/types/project.types";
 // import { tickets } from "../pseudoDB";
 
 const projectsController = Router();
 
 projectsController.get('/', async (req, res) => {
-    try {
-        const tickets = await ProjectModel.find();
-        return res.status(200).json(tickets);
-    } catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    await getAllProjects(req, res);
 });
 
 projectsController.get('/view_by_name/:projectName', async (req, res) => {
@@ -27,13 +27,7 @@ projectsController.get('/view_by_name/:projectName', async (req, res) => {
     // }
     // return await res.status(200).json(tickets[ticketIndex]);
         
-    try{
-        const ticket = await ProjectModel.find({ projectName: req.params.projectName });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    await getProjectByName(req, res);
 });
 
 projectsController.get('/view_by_status/:status', async (req, res) =>{
@@ -48,17 +42,11 @@ projectsController.get('/view_by_status/:status', async (req, res) =>{
     // const filteredTickets = await tickets.filter(ticket => ticket.status === searchedStatus);
     // return res.status(200).json(filteredTickets);
 
-    const ticketStatusIndex: number = validTicketStatus.indexOf(req.params.status);
+    const ticketStatusIndex: number = validProjectStatus.indexOf(req.params.status);
     if(ticketStatusIndex === -1){
         return res.status(400).json({'message': 'Invalid Ticket Status Input'});
     }
-    try{
-        const ticket = await ProjectModel.find({ status: req.params.status });
-        return res.status(200).json(ticket);
-    } 
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    await getProjectByStatus(req, res);
 })
 
 
@@ -107,25 +95,33 @@ projectsController.post('/create', async (req, res) => {
 
     // check the other DB and check if objects are present
 
-    const newProject = new ProjectModel({
-        id: new mongoose.Types.ObjectId,
-        projectName: req.body.projectName,
-        description: req.body.description,
-        status: req.body.status,
-    });
-
-    const validationError = newProject.validateSync();
-    if (validationError) {
-        return res.status(400).json(validationError);
+    if (req.body.projectName) {
+        const project = await ProjectModel.findOne({ projectName: req.body.projectName });
+        if (project) {
+            return res.status(404).json({ message: "There is a project with this name" });
+        }
     }
 
-    try {
-        await newProject.save();
-        return res.status(201).json(newProject);
-    }
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    // const newProject = new ProjectModel({
+    //     id: new mongoose.Types.ObjectId,
+    //     projectName: req.body.projectName,
+    //     description: req.body.description,
+    //     status: req.body.status,
+    // });
+
+    // const validationError = newProject.validateSync();
+    // if (validationError) {
+    //     return res.status(400).json(validationError);
+    // }
+
+    // try {
+    //     await newProject.save();
+    //     return res.status(201).json(newProject);
+    // }
+    // catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+    await createProject(req, res);
 });
 
 projectsController.put('/edit/:projectName', async (req, res) => {
@@ -174,9 +170,6 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     // }
     // ticketToBeEdited.updateDate = new Date();
     // tickets[searchedTicketIndex] = ticket
-    if(req.body.priority && validTicketPriorities.indexOf(req.body.priority) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Priority'});
-    }
 
     
     const projectToBeUpdated = await ProjectModel.findOne({ projectName: req.params.projectName });
@@ -189,25 +182,25 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     // and check if null and change data that is not null
     // check the new title if is not taken and projectID and etc.
 
-    if(req.body.status && validTicketStatus.indexOf(req.body.status) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Status'});
+    if(req.body.status && validProjectStatus.indexOf(req.body.status) === -1){
+        return res.status(400).json({message : 'Invalid Project Status'});
     }
 
     // check if enums for status and priority are validated
-    try {
-        const upradeProject = await ProjectModel.findOneAndUpdate({ projectName: req.params.projectName },
-            { $set: 
-                { 
-                projectName: req.body.projectName, updateDate: new Date(),
-                description: req.body.description, status: req.body.status
-                }
-            });
-        return res.status(200).json(upradeProject);
-    } 
-    catch (error) {
-        return res.status(400).json({ message: error });
-    }
-
+    // try {
+    //     const updateProject = await ProjectModel.findOneAndUpdate({ projectName: req.params.projectName },
+    //         { $set: 
+    //             { 
+    //             projectName: req.body.projectName, updateDate: new Date(),
+    //             description: req.body.description, status: req.body.status
+    //             }
+    //         });
+    //     return res.status(200).json(updateProject);
+    // } 
+    // catch (error) {
+    //     return res.status(400).json({ message: error });
+    // }
+    await updateProject(req, res);
 });
 
 projectsController.delete('/delete/:projectName', async (req, res) => {
@@ -233,18 +226,8 @@ projectsController.delete('/delete/:projectName', async (req, res) => {
         //             });
         //     }
         // }
-        
-    try {
-        const projectToBeDeleted = await ProjectModel.findOneAndDelete({ title: req.params.projectName });
-        // if (projectToBeDeleted) {
-        //     return res.status(400).json({ 'message': 'No Ticket Id Input' });
-        // }
-
-        return res.status(200).json(projectToBeDeleted);
-    }
-    catch (error) {
-        return res.status(404).json({ message: error });
-    }
+    
+    await deleteProject(req, res);
 });
 
 export default projectsController;
