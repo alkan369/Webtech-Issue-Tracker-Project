@@ -1,23 +1,22 @@
 import { Router } from "express";
 import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from "../../interfaces/ticket";
-import  { TicketModel } from '../../database/models/ticket.model';
 import mongoose from "mongoose";
-import { ProjectModel } from "../../database/models/project.model";
 import { UserModel } from "../../database/models/user.model";
+import { genSaltSync, hashSync } from "bcrypt";
 // import { tickets } from "../pseudoDB";
 
 const usersController = Router();
 
 usersController.get('/', async (req, res) => {
     try {
-        const tickets = await TicketModel.find();
-        return res.status(200).json(tickets);
+        const users = await UserModel.find();
+        return res.status(200).json(users);
     } catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 });
 
-usersController.get('/view_by_title/:title', async (req, res) => {
+usersController.get('/view_by_username/:username', async (req, res) => {
     // const searchedTicketID: string = req.params.title;
     // if (!searchedTicketID || searchedTicketID.length === 0) {
     //     return res.status(400).json({ 'message': 'Empty Ticket Id' });
@@ -29,15 +28,15 @@ usersController.get('/view_by_title/:title', async (req, res) => {
     // return await res.status(200).json(tickets[ticketIndex]);
         
     try{
-        const ticket = await TicketModel.find({ title: req.params.title });
-        return res.status(200).json(ticket);
+        const user = await UserModel.find({ username: req.params.username });
+        return res.status(200).json(user);
     } 
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 });
 
-usersController.get('/view_by_project/:projectName', async (req, res) =>{
+usersController.get('/view_by_firstName/:firstName', async (req, res) =>{
     // const searchedProjectName: string = req.params.projectName;
     // if(!searchedProjectId || searchedProjectId.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
@@ -45,15 +44,15 @@ usersController.get('/view_by_project/:projectName', async (req, res) =>{
     // const filteredTickets = await tickets.filter(tickets => tickets.projectId === searchedProjectId);
     // return res.status(200).json(filteredTickets);
     try{
-        const ticket = await TicketModel.find({ projectName: req.params.projectName });
-        return res.status(200).json(ticket);
+        const user = await UserModel.find({ firstName: req.params.firstName });
+        return res.status(200).json(user);
     } 
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 })
 
-usersController.get('/view_by_asignee/:assignedTo', async (req, res) =>{
+usersController.get('/view_by_lastName/:lastName', async (req, res) =>{
     // const searchedAsignedTo: string = req.params.assignedTo;
     // if(!searchedAsignedTo || searchedAsignedTo.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Asignee Input'});
@@ -61,15 +60,15 @@ usersController.get('/view_by_asignee/:assignedTo', async (req, res) =>{
     // const filteredTickets = await tickets.filter(tickets => tickets.assignedTo === searchedAsignedTo);
     // return res.status(200).json(filteredTickets);
     try{
-        const ticket = await TicketModel.find({ assignedTo: req.params.assignedTo });
-        return res.status(200).json(ticket);
+        const user = await UserModel.find({ lastName: req.params.lastName });
+        return res.status(200).json(user);
     } 
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 })
 
-usersController.get('/view_by_status/:status', async (req, res) =>{
+usersController.get('/view_by_email/:email', async (req, res) =>{
     // const searchedStatus: string = req.params.status;
     // if(!searchedStatus || searchedStatus.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Status Input'});
@@ -81,16 +80,16 @@ usersController.get('/view_by_status/:status', async (req, res) =>{
     // const filteredTickets = await tickets.filter(ticket => ticket.status === searchedStatus);
     // return res.status(200).json(filteredTickets);
     try{
-        const ticket = await TicketModel.find({ status: req.params.status });
-        return res.status(200).json(ticket);
+        const user = await UserModel.find({ email: req.params.email });
+        return res.status(200).json(user);
     } 
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 })
 
 
-usersController.post('/create', async (req: TicketRequest, res) => {
+usersController.post('/create', async (req, res) => {
     // const newTicketId: string = String(tickets.length + 1);
     // const newTicketTitle: string = req.body.title;
     // const newTicketProjectId: string = req.body.projectId ? req.body.projectId : '';    // is it ok not to have project ID
@@ -134,36 +133,71 @@ usersController.post('/create', async (req: TicketRequest, res) => {
     // }
 
     // check title
-    const projectName: string = req.body.projectName;
-    const assignedTo: string = req.body.assignedTo;
+    // const projectName: string = req.body.projectName;
+    // const assignedTo: string = req.body.assignedTo;
 
     // check the other DB and check if objects are present
 
-    const newTicket = new TicketModel({
-        id: new mongoose.Types.ObjectId,
-        title: req.body.title,
-        projectName: projectName,
-        assignedTo: assignedTo,
-        description: req.body.description,
-        status: req.body.status,
-        priority: req.body.priority
+    // const newTicket = new UserModel({
+    //     id: new mongoose.Types.ObjectId,
+    //     title: req.body.title,
+    //     projectName: projectName,
+    //     assignedTo: assignedTo,
+    //     description: req.body.description,
+    //     status: req.body.status,
+    //     priority: req.body.priority
+    // });
+
+    // const validationError = newTicket.validateSync();
+    // if (validationError) {
+    //     return res.status(400).json(validationError);
+    // }
+
+    // try {
+    //     await newTicket.save();
+    //     return res.status(201).json(newTicket);
+    // }
+    // catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+    const userWithSuchEmail = UserModel.findOne({ email: req.body.email });
+    if(userWithSuchEmail){
+        return res.status(400).json({ message: 'User With Such Email Already Exists' });
+    }
+
+    const userWithSuchUsername = UserModel.findOne({ username: req.body.username });
+    if(userWithSuchUsername){
+        return res.status(400).json({ message: 'User With Such Username Already Exists' });
+    }
+    
+    if(req.body.password.length < 8){
+        return res.status(400).json({ message: 'User Password Must Be Atleast 8 Characters' });
+    }
+
+    const newUser = new UserModel({
+        id: new mongoose.Types.ObjectId(),
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: hashSync(req.body.password, genSaltSync()),
+        username: req.body.username,
     });
 
-    const validationError = newTicket.validateSync();
+    const validationError = newUser.validateSync();
     if (validationError) {
         return res.status(400).json(validationError);
     }
 
     try {
-        await newTicket.save();
-        return res.status(201).json(newTicket);
-    }
-    catch (error) {
+        await newUser.save();
+        return res.status(201).json(newUser);
+    } catch (error) {
         return res.status(500).json({ message: error });
     }
+
 });
 
-usersController.put('/edit/:title', async (req, res) => {
+usersController.put('/edit/:username', async (req, res) => {
     // const ticketID = req.params.id;
     // if(!ticketID || ticketID.length === 0){
     //     return res.status(400).json({'message': 'No Entered Ticket Id'});
@@ -212,9 +246,9 @@ usersController.put('/edit/:title', async (req, res) => {
     // return res.status(200).json(ticketToBeEdited);
 
     
-    const ticketToBeUpdated = await TicketModel.findOne({ title: req.params.title });
-    if (!ticketToBeUpdated) {
-        return res.status(404).json({ message: 'No ticket With Such Title' });
+    const userToBeUpdated = await UserModel.findOne({ username: req.params.username });
+    if (!userToBeUpdated) {
+        return res.status(400).json({ message: 'No User With Such Username' });
     }
     
     // newpproject 
@@ -222,46 +256,43 @@ usersController.put('/edit/:title', async (req, res) => {
     // and check if null and change data that is not null
     // check the new title if is not taken and projectID and etc.
 
-    if(req.body.projectName){
-        const searchedProjectName = await ProjectModel.findOne({ projectName: req.body.projectName });
-        if(!searchedProjectName){
-            return res.status(404).json({ message: 'No Such Project Name' });
+    if(req.body.email){
+        const searchedEmail = await UserModel.findOne({ email: req.body.email });
+        if(searchedEmail){
+            return res.status(400).json({ message: 'User With Such Email Already Exists' });
         }
     }
     
-    if(req.body.assignedTo){
-        const searchedAssignedTo = await UserModel.findOne({ username: req.body.assignedTo });
-        if(!searchedAssignedTo){
-            return res.status(404).json({ message: 'No User With Such Username' });
+    if(req.body.username){
+        const searchedUsername = await UserModel.findOne({ username: req.body.username });
+        if(searchedUsername){
+            return res.status(400).json({ message: 'User With Such Username Already Exists' });
         }
     }
-
-    if(req.body.status && validTicketStatus.indexOf(req.body.status) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Status'});
-    }
-
-    if(req.body.priority && validTicketPriorities.indexOf(req.body.priority) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Priority'});
+    
+    if(req.body.password && req.body.password.length < 8){
+        return res.status(400).json({ message: 'Password Must Be Atleast 8 Characters Long' });
     }
 
     // check if enums for status and priority are validated
     try {
-        const updateTicket = await TicketModel.findOneAndUpdate({ title: req.params.title },
+        const updateUser = await UserModel.findOneAndUpdate({ username: req.params.username },
             { $set: 
                 { 
-                title: req.body.title, projectName: req.body.projectName, assignedTo: req.body.assignedTo, 
-                description: req.body.description, status: req.body.status, updateDate: new Date(), priority: req.body.priority
+                fistName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, 
+                password: hashSync(req.body.password, genSaltSync()),
+                username: req.body.username, updateDate: new Date()
                 }
             });
-        return res.status(200).json(updateTicket);
+        return res.status(200).json(updateUser);
     } 
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 
 });
 
-usersController.delete('/delete/:title', async (req, res) => {
+usersController.delete('/delete/:username', async (req, res) => {
     // const searchedTicketId: string = req.params.id;
     // if(!searchedTicketId || searchedTicketId.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Id Input'});
@@ -286,15 +317,15 @@ usersController.delete('/delete/:title', async (req, res) => {
         // }
         
     try {
-        const deletedTicket = await TicketModel.findOneAndDelete({ title: req.params.title });
-        // if (deletedTicket) {
-        //     return res.status(400).json({ 'message': 'No Ticket Id Input' });
-        // }
+        const deletedUser = await UserModel.findOneAndDelete({ username: req.params.username });
 
-        return res.status(200).json(deletedTicket);
+        if (!deletedUser) {
+            return res.status(400).json({ 'message': 'No User With Such Username' });
+        }
+        return res.status(200).json(deletedUser);
     }
     catch (error) {
-        return res.status(404).json({ message: error });
+        return res.status(500).json({ message: error });
     }
 });
 

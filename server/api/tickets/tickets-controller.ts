@@ -102,7 +102,7 @@ ticketsController.get('/view_by_status/:status', async (req, res) =>{ // works
 })
 
 
-ticketsController.post('/create', async (req: TicketRequest, res) => { // works
+ticketsController.post('/create', async (req, res) => { // works
     // const newTicketId: string = String(tickets.length + 1);
     // const newTicketTitle: string = req.body.title;
     // const newTicketProjectId: string = req.body.projectId ? req.body.projectId : '';    // is it ok not to have project ID
@@ -148,25 +148,36 @@ ticketsController.post('/create', async (req: TicketRequest, res) => { // works
     // check title
     // const projectName: string = req.body.projectName;
     // const assignedTo: string = req.body.assignedTo;
+    
     if (req.body.title) {
         const ticket = await TicketModel.findOne({ title: req.body.title });
         if (ticket) {
-            return res.status(404).json({ message: "There is a ticket with this title"});
+            return res.status(400).json({ message: 'Ticket With Such Title Already Exists' });
         }
     }
     
     if (req.body.projectName) {
         const project = await ProjectModel.findOne({ projectName: req.body.projectName});
         if (!project) {
-            return res.status(404).json({ message: "No Project with This Name"});
+            return res.status(400).json({ message: 'No Project With Such Name' });
+        }
+        if(project.status === 'Done'){
+            return res.status(400).json({ message: 'Cannot Be Created Ticket To A Project With Status Done' });
         }
     }
 
     if (req.body.assignedTo) {
         const user = await UserModel.findOne({ username: req.body.assignedTo });
         if (!user) {
-            return res.status(404).json({ message: "No User with This Username"})
+            return res.status(400).json({ message: "No User With Such Username"})
         }
+    }
+
+    if(!req.body.priority){
+        return res.status(400).json({ message: 'Ticket Priority Has Not Been Entered' });
+    }
+    if(validTicketPriorities.indexOf(req.body.priority) === -1){
+        return res.status(400).json({ message: 'Invalid Ticket Priority Input' });
     }
 
     // check the other DB and check if objects are present
@@ -250,7 +261,14 @@ ticketsController.put('/edit/:title', async (req, res) => { // works
     
     const ticketToBeUpdated = await TicketModel.findOne({ title: req.params.title });
     if (!ticketToBeUpdated) {
-        return res.status(404).json({ message: 'No Ticket With Such Title' });
+        return res.status(400).json({ message: 'No Ticket With Such Title' });
+    }
+
+    if (req.body.title) {
+        const ticket = await TicketModel.findOne({ title: req.body.title });
+        if (ticket) {
+            return res.status(400).json({ message: 'Ticket With Such Title Already Exists' });
+        }
     }
     
     // newpproject 
@@ -261,23 +279,44 @@ ticketsController.put('/edit/:title', async (req, res) => { // works
     if(req.body.projectName){
         const searchedProjectName = await ProjectModel.findOne({ projectName: req.body.projectName });
         if(!searchedProjectName){
-            return res.status(404).json({ message: 'No Such Project Name' });
+            return res.status(400).json({ message: 'No Such Project Name' });
         }
     }
     
     if(req.body.assignedTo){
         const searchedAssignedTo = await UserModel.findOne({ username: req.body.assignedTo });
         if(!searchedAssignedTo){
-            return res.status(404).json({ message: 'No User With Such Username' });
+            return res.status(400).json({ message: 'No User With Such Username' });
         }
     }
 
     if(req.body.status && validTicketStatus.indexOf(req.body.status) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Status'});
+        return res.status(400).json({ message: 'Invalid Ticket Status' });
+    }
+    
+    if(req.body.status === 'Open'){
+        return res.status(400).json({ message: 'Ticket Has Already Been Open' });
     }
 
-    if(req.body.priority && validTicketPriorities.indexOf(req.body.priority) === -1){
-        return res.status(400).json({message : 'Invalid Ticket Priority'});
+    if(req.body.status === 'Resolved' && ticketToBeUpdated.status === 'Open'){
+        return res.status(400).json({message: 'Ticket Status Cannot Be Changed To Resolved From Open'});
+    }
+
+    // Open -> In progess // ok
+    // Open -> resolved -> XXX
+    // In progess -> resolved // <- OK
+    // resolved -> OPEN -> NO
+    // resolved -> In Progess -> OK
+    
+    // check if open(body)
+    
+    
+    // not needed to check for in progress
+    
+    //resolved(body) -> ticket status cannot be open
+    
+    if (req.body.priority && validTicketPriorities.indexOf(req.body.priority) === -1) {
+        return res.status(400).json({ message: 'Invalid Ticket Priority' });
     }
 
     // check if enums for status and priority are validated

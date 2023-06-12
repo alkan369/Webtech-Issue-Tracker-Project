@@ -29,5 +29,9 @@ export const UserSchema = new Schema({
     createDate: {
         type: Schema.Types.Date,
         default: new Date(),
-    }
+    },
+    updateDate: {
+        type: Schema.Types.Date,
+        default: new Date(),
+    },
 });

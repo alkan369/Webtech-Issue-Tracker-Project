@@ -11,7 +11,7 @@ export async function getAllProjects(
         const tickets = await ProjectModel.find();
         res.status(200).json(tickets);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -24,7 +24,7 @@ export async function getProjectByName(
         res.status(200).json(ticket);
     } 
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -37,7 +37,7 @@ export async function getProjectByStatus(
         res.status(200).json(ticket);
     } 
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -48,8 +48,7 @@ export async function createProject(
     const newProject = new ProjectModel({
         id: new mongoose.Types.ObjectId,
         projectName: req.body.projectName,
-        description: req.body.description,
-        status: req.body.status,
+        description: req.body.description
     });
 
     const validationError = newProject.validateSync();
@@ -82,7 +81,7 @@ export async function updateProject(
         res.status(200).json(updateProject);
     } 
     catch (error) {
-        res.status(400).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -93,13 +92,13 @@ export async function deleteProject(
     try {
         const projectToBeDeleted = await ProjectModel.findOneAndDelete({ projectName: req.params.projectName });
         if (!projectToBeDeleted) {
-            res.status(400).json({ 'message': 'No Project with this name' });
+            res.status(400).json({ 'message': 'No Project With Such ProjectName' });
             return;
         }
 
         res.status(200).json(projectToBeDeleted);
     }
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }

@@ -11,7 +11,7 @@ export async function getTicketByStatus(
         const ticket = await TicketModel.find({ status: req.params.status });
         res.status(200).json(ticket);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -23,7 +23,7 @@ export async function getTicketByTitle(
         const ticket = await TicketModel.find({ title: req.params.title });
         res.status(200).json(ticket);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -35,7 +35,7 @@ export async function getTicketByProjectName(
         const ticket = await TicketModel.find({ projectName: req.params.projectName });
         res.status(200).json(ticket);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -47,7 +47,7 @@ export async function getTicketWithNoProject(
         const ticket = await TicketModel.find({ projectName: "" });
         res.status(200).json(ticket);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -60,7 +60,7 @@ export async function getTicketByAssignee(
         res.status(200).json(ticket);
     } 
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -73,7 +73,7 @@ export async function getTicketNotAsigned(
         res.status(200).json(ticket);
     } 
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -87,7 +87,6 @@ export async function createTicket(
         projectName: req.body.projectName,
         assignedTo: req.body.assignedTo,
         description: req.body.description,
-        status: req.body.status,
         priority: req.body.priority
     });
 
@@ -121,7 +120,7 @@ export async function updateTicket(
         res.status(200).json(updateTicket);
     } 
     catch (error) {
-        res.status(400).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -132,13 +131,13 @@ export async function deleteTicket(
     try {
         const deletedTicket = await TicketModel.findOneAndDelete({ title: req.params.title });
         if (!deletedTicket) {
-            res.status(400).json({ 'message': 'No Ticket with this title' });
+            res.status(400).json({ 'message': 'No Ticket With Such Title' });
             return;
         }
         res.status(200).json(deletedTicket);
     }
     catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }
 
@@ -150,6 +149,6 @@ export async function getAllTickets(
         const tickets = await TicketModel.find();
         res.status(200).json(tickets);
     } catch (error) {
-        res.status(404).json({ message: error });
+        res.status(500).json({ message: error });
     }
 }

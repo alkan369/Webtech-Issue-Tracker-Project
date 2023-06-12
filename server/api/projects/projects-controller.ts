@@ -8,6 +8,7 @@ createProject,
 updateProject,
 deleteProject} from "../../database/methods/project.methods";
 import { validProjectStatus } from "../../database/types/project.types";
+import { TicketModel } from "../../database/models/ticket.model";
 // import { tickets } from "../pseudoDB";
 
 const projectsController = Router();
@@ -98,7 +99,7 @@ projectsController.post('/create', async (req, res) => {
     if (req.body.projectName) {
         const project = await ProjectModel.findOne({ projectName: req.body.projectName });
         if (project) {
-            return res.status(404).json({ message: "There is a project with this name" });
+            return res.status(400).json({ message: 'There Is A Project With Such Name' });
         }
     }
 
@@ -182,8 +183,24 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     // and check if null and change data that is not null
     // check the new title if is not taken and projectID and etc.
 
+    if (req.body.projectName) {
+        const project = await ProjectModel.findOne({ projectName: req.body.projectName });
+        if (project) {
+            return res.status(400).json({ message: 'There Is A Project With Such Name' });
+        }
+    }
+
     if(req.body.status && validProjectStatus.indexOf(req.body.status) === -1){
-        return res.status(400).json({message : 'Invalid Project Status'});
+        return res.status(400).json({ message: 'Invalid Project Status' });
+    }
+
+    if(req.body.status === 'Done' && projectToBeUpdated.status !== 'Done'){
+        const currentProjectTickets = await TicketModel.find({ projectName: req.params.projectName });
+        for(var ticket of currentProjectTickets){
+            if(ticket.status !== 'Resolved'){
+                return res.status(400).json({message: 'Project Has Incompleted Tickets'});
+            }
+        }
     }
 
     // check if enums for status and priority are validated

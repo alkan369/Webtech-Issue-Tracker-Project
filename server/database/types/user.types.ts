@@ -6,4 +6,5 @@ export interface IUser {
     password: string;
     username: string;
     createDate: Date;
+    updatedDate: Date;
 }
