@@ -3,17 +3,13 @@ import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from 
 import mongoose from "mongoose";
 import { UserModel } from "../../database/models/user.model";
 import { genSaltSync, hashSync } from "bcrypt";
+import { createUser, deleteUser, getAllUsers, getUserByEmail, getUserByFirstName, getUserByLastName, getUserByUsername, updateUser } from "../../database/methods/user.methods";
 // import { tickets } from "../pseudoDB";
 
 const usersController = Router();
 
 usersController.get('/', async (req, res) => {
-    try {
-        const users = await UserModel.find();
-        return res.status(200).json(users);
-    } catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    await getAllUsers(req, res);
 });
 
 usersController.get('/view_by_username/:username', async (req, res) => {
@@ -27,13 +23,7 @@ usersController.get('/view_by_username/:username', async (req, res) => {
     // }
     // return await res.status(200).json(tickets[ticketIndex]);
         
-    try{
-        const user = await UserModel.find({ username: req.params.username });
-        return res.status(200).json(user);
-    } 
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+   await getUserByUsername(req, res);
 });
 
 usersController.get('/view_by_firstName/:firstName', async (req, res) =>{
@@ -43,13 +33,7 @@ usersController.get('/view_by_firstName/:firstName', async (req, res) =>{
     // }
     // const filteredTickets = await tickets.filter(tickets => tickets.projectId === searchedProjectId);
     // return res.status(200).json(filteredTickets);
-    try{
-        const user = await UserModel.find({ firstName: req.params.firstName });
-        return res.status(200).json(user);
-    } 
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    await getUserByFirstName(req, res);
 })
 
 usersController.get('/view_by_lastName/:lastName', async (req, res) =>{
@@ -59,13 +43,7 @@ usersController.get('/view_by_lastName/:lastName', async (req, res) =>{
     // }    
     // const filteredTickets = await tickets.filter(tickets => tickets.assignedTo === searchedAsignedTo);
     // return res.status(200).json(filteredTickets);
-    try{
-        const user = await UserModel.find({ lastName: req.params.lastName });
-        return res.status(200).json(user);
-    } 
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    await getUserByLastName(req, res);
 })
 
 usersController.get('/view_by_email/:email', async (req, res) =>{
@@ -79,13 +57,7 @@ usersController.get('/view_by_email/:email', async (req, res) =>{
     // }
     // const filteredTickets = await tickets.filter(ticket => ticket.status === searchedStatus);
     // return res.status(200).json(filteredTickets);
-    try{
-        const user = await UserModel.find({ email: req.params.email });
-        return res.status(200).json(user);
-    } 
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    await getUserByEmail(req, res);
 })
 
 
@@ -174,26 +146,27 @@ usersController.post('/create', async (req, res) => {
         return res.status(400).json({ message: 'User Password Must Be Atleast 8 Characters' });
     }
 
-    const newUser = new UserModel({
-        id: new mongoose.Types.ObjectId(),
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: hashSync(req.body.password, genSaltSync()),
-        username: req.body.username,
-    });
+    // const newUser = new UserModel({
+    //     id: new mongoose.Types.ObjectId(),
+    //     firstName: req.body.firstName,
+    //     lastName: req.body.lastName,
+    //     email: req.body.email,
+    //     password: hashSync(req.body.password, genSaltSync()),
+    //     username: req.body.username,
+    // });
 
-    const validationError = newUser.validateSync();
-    if (validationError) {
-        return res.status(400).json(validationError);
-    }
+    // const validationError = newUser.validateSync();
+    // if (validationError) {
+    //     return res.status(400).json(validationError);
+    // }
 
-    try {
-        await newUser.save();
-        return res.status(201).json(newUser);
-    } catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    // try {
+    //     await newUser.save();
+    //     return res.status(201).json(newUser);
+    // } catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+    await createUser(req, res);
 
 });
 
@@ -275,21 +248,21 @@ usersController.put('/edit/:username', async (req, res) => {
     }
 
     // check if enums for status and priority are validated
-    try {
-        const updateUser = await UserModel.findOneAndUpdate({ username: req.params.username },
-            { $set: 
-                { 
-                fistName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, 
-                password: hashSync(req.body.password, genSaltSync()),
-                username: req.body.username, updateDate: new Date()
-                }
-            });
-        return res.status(200).json(updateUser);
-    } 
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
-
+    // try {
+    //     const updateUser = await UserModel.findOneAndUpdate({ username: req.params.username },
+    //         { $set: 
+    //             { 
+    //             fistName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, 
+    //             password: hashSync(req.body.password, genSaltSync()),
+    //             username: req.body.username, updateDate: new Date()
+    //             }
+    //         });
+    //     return res.status(200).json(updateUser);
+    // } 
+    // catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+    await updateUser(req, res);
 });
 
 usersController.delete('/delete/:username', async (req, res) => {
@@ -316,17 +289,19 @@ usersController.delete('/delete/:username', async (req, res) => {
         //     }
         // }
         
-    try {
-        const deletedUser = await UserModel.findOneAndDelete({ username: req.params.username });
+    // try {
+    //     const deletedUser = await UserModel.findOneAndDelete({ username: req.params.username });
 
-        if (!deletedUser) {
-            return res.status(400).json({ 'message': 'No User With Such Username' });
-        }
-        return res.status(200).json(deletedUser);
-    }
-    catch (error) {
-        return res.status(500).json({ message: error });
-    }
+    //     if (!deletedUser) {
+    //         return res.status(400).json({ 'message': 'No User With Such Username' });
+    //     }
+    //     return res.status(200).json(deletedUser);
+    // }
+    // catch (error) {
+    //     return res.status(500).json({ message: error });
+    // }
+
+    await deleteUser(req, res);
 });
 
 export default usersController;
