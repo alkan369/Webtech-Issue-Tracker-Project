@@ -3,6 +3,18 @@ import { TicketModel } from "../models/ticket.model";
 import mongoose from "mongoose";
 
 
+export async function getAllTickets(
+    req: express.Request,
+    res: express.Response
+): Promise<void> {
+    try {
+        const tickets = await TicketModel.find();
+        res.status(200).json(tickets);
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
 export async function getTicketByStatus(
     req: express.Request,
     res: express.Response
@@ -137,18 +149,6 @@ export async function deleteTicket(
         res.status(200).json(deletedTicket);
     }
     catch (error) {
-        res.status(500).json({ message: error });
-    }
-}
-
-export async function getAllTickets(
-    req: express.Request,
-    res: express.Response
-): Promise<void> {
-    try {
-        const tickets = await TicketModel.find();
-        res.status(200).json(tickets);
-    } catch (error) {
         res.status(500).json({ message: error });
     }
 }

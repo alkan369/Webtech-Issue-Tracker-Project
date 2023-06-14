@@ -175,7 +175,7 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     
     const projectToBeUpdated = await ProjectModel.findOne({ projectName: req.params.projectName });
     if (!projectToBeUpdated) {
-        return res.status(404).json({ message: 'No Project With Such Name' });
+        return res.status(400).json({ message: 'No Project With Such Name' });
     }
     
     // newpproject 

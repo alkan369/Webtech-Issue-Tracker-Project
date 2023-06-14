@@ -169,13 +169,14 @@ ticketsController.post('/create', async (req, res) => { // works
     if (req.body.assignedTo) {
         const user = await UserModel.findOne({ username: req.body.assignedTo });
         if (!user) {
-            return res.status(400).json({ message: "No User With Such Username"})
+            return res.status(400).json({ message: 'No User With Such Username'})
         }
     }
 
     if(!req.body.priority){
         return res.status(400).json({ message: 'Ticket Priority Has Not Been Entered' });
     }
+    
     if(validTicketPriorities.indexOf(req.body.priority) === -1){
         return res.status(400).json({ message: 'Invalid Ticket Priority Input' });
     }
