@@ -8,15 +8,15 @@ export const TicketSchema = new Schema({
         required: true,
         unique:true,
     },
+    description: {
+        type: Schema.Types.String,
+        default: "",
+    },
     projectName: {
         type: Schema.Types.String,
         default: "",
     },
     assignedTo: {
-        type: Schema.Types.String,
-        default: "",
-    },
-    description: {
         type: Schema.Types.String,
         default: "",
     },
