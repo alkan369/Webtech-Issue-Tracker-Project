@@ -20,6 +20,7 @@ newIssueForm.addEventListener('submit', e => {
   const priority = document.getElementById('priority-select').value;
   const assignee = document.getElementById('assign-select').value;
   const status = document.getElementById('status-select').value;
+
   const issue = document.createElement('div');
   issue.classList.add('issue', priority);
   issue.innerHTML = `
