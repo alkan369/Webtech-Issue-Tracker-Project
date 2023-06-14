@@ -7,6 +7,13 @@ The project consists of 4 parts:
 * Database(MongoDB)
 
 ----
+
+## Architecture diagram of the whole project
+
+To be updated
+
+---
+
 ## Frontend(Login/Register)
 
 To be updated
