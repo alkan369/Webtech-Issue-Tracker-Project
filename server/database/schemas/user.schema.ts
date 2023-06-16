@@ -13,7 +13,7 @@ export const UserSchema = new Schema({
     email: {
         type: Schema.Types.String,
         required: true,
-        match: [/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, 'Invalid email'],
+        // match: [/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, 'Invalid email'],
         unique: true,
     },
     password: {

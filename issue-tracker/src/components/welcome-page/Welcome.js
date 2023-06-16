@@ -29,6 +29,7 @@ function App() {
       username,
       email,
       password,
+      confirmPassword
     };
 
     axios
@@ -50,7 +51,7 @@ function App() {
     axios
       .post('/api/users/login', loginData)
       .then((response) => {
-        alert('Login successful!');
+        alert("Login successful");
       })
       .catch((error) => {
         alert(error.response.data.message);

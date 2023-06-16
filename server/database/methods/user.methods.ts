@@ -1,7 +1,7 @@
 import express from "express";
 import { UserModel } from "../models/user.model";
 import mongoose from "mongoose";
-import { genSaltSync, hashSync } from "bcrypt";
+import { genSaltSync, hashSync, compare } from "bcrypt";
 
 export async function getAllUsers(
     req: express.Request,
@@ -75,9 +75,9 @@ export async function createUser(
         id: new mongoose.Types.ObjectId(),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        username: req.body.username,
         email: req.body.email,
         password: hashSync(req.body.password, genSaltSync()),
-        username: req.body.username,
     });
 
     const validationError = newUser.validateSync();
@@ -94,6 +94,37 @@ export async function createUser(
     }
 }
 
+export async function loginUser(
+    req: express.Request,
+    res: express.Response
+): Promise<void> {
+    try{
+        // console.log("Before Find One"); 
+        const searchedUser = await UserModel.findOne({ username: req.body.loginUsername })
+
+        // if(searchedUser){
+        //     console.log("Found");
+        // }
+
+        if(!searchedUser || !await compare(req.body.loginPassword, searchedUser.password)){
+            res.status(400).json({ message: 'Invalid Username Or Password'});
+            return;
+        }
+
+        // console.log("After Find One");
+        // if(!searchedUser){
+        //     res.status(400).json({ message: 'Invalid Username Or Password'});
+        //     return;
+        // }
+        // console.log("Before Status 200");
+        res.status(400).json({ message: `Welcome Back ${searchedUser.username}` });
+        // console.log("After Status 200");
+    }
+    catch(error){
+        res.status(500).json({ message: error });
+    }
+}
+
 export async function updateUser(
     req: express.Request,
     res: express.Response
@@ -102,9 +133,10 @@ export async function updateUser(
         const updateUser = await UserModel.findOneAndUpdate({ username: req.params.username },
             { $set: 
                 { 
-                fistName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, 
+                fistName: req.body.firstName, lastName: req.body.lastName,
+                username: req.body.username, email: req.body.email, 
                 password: hashSync(req.body.password, genSaltSync()),
-                username: req.body.username, updateDate: new Date()
+                updateDate: new Date()
                 }
             });
         res.status(200).json(updateUser);

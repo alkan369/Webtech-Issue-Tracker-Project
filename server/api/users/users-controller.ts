@@ -3,7 +3,7 @@ import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from 
 import mongoose from "mongoose";
 import { UserModel } from "../../database/models/user.model";
 import { genSaltSync, hashSync } from "bcrypt";
-import { createUser, deleteUser, getAllUsers, getUserByEmail, getUserByFirstName, getUserByLastName, getUserByUsername, updateUser } from "../../database/methods/user.methods";
+import { createUser, deleteUser, getAllUsers, getUserByEmail, getUserByFirstName, getUserByLastName, getUserByUsername, loginUser, updateUser } from "../../database/methods/user.methods";
 // import { tickets } from "../pseudoDB";
 
 const usersController = Router();
@@ -132,16 +132,49 @@ usersController.post('/create', async (req, res) => {
     // catch (error) {
     //     return res.status(500).json({ message: error });
     // }
-    const userWithSuchEmail = UserModel.findOne({ email: req.body.email });
-    if(userWithSuchEmail){
-        return res.status(400).json({ message: 'User With Such Email Already Exists' });
+
+    if(!req.body.firstName || req.body.firstName === ""){
+        return res.status(400).json({ message: 'Not First Name Entered' });
     }
 
-    const userWithSuchUsername = UserModel.findOne({ username: req.body.username });
-    if(userWithSuchUsername){
+    if(!req.body.lastName || req.body.lastName === ""){
+        return res.status(400).json({ message: 'Not Last Name Entered' });
+    }
+
+    if(!req.body.username || req.body.username === ""){
+        return res.status(400).json({ message: 'Not Username Entered' });
+    }
+
+    if(!req.body.email || req.body.email === ""){
+        return res.status(400).json({ message: 'Not Email Entered' });
+    }
+
+    if(!req.body.password || req.body.password === ""){
+        return res.status(400).json({ message: 'Not Password Entered' });
+    }
+
+    if(!req.body.confirmPassword || req.body.confirmPassword === ""){
+        return res.status(400).json({ message: 'Not Confirm Password Entered' });
+    }
+    
+    if(req.body.password !== req.body.confirmPassword){
+        return res.status(400).json({ message: 'Password and Confirm Password Dont Match' });
+    }
+    
+    const userWithSuchUsername = await UserModel.findOne({ username: req.body.username });
+    if (userWithSuchUsername) {
         return res.status(400).json({ message: 'User With Such Username Already Exists' });
     }
     
+    const userWithSuchEmail = await UserModel.findOne({ email: req.body.email });
+    if (userWithSuchEmail) {
+        //   const x = res.status(400).json({ message: 'User With Such Email Already Exists' });
+        // //   console.log("LINE 142 : ");
+        // //   console.log());
+        // //   console.log("\nafter header\n");
+        return res.status(400).json({ message: 'User With Such Email Already Exists' });
+    }
+
     if(req.body.password.length < 8){
         return res.status(400).json({ message: 'User Password Must Be Atleast 8 Characters' });
     }
@@ -168,6 +201,20 @@ usersController.post('/create', async (req, res) => {
     // }
     await createUser(req, res);
 
+});
+
+usersController.post('/login', async (req, res) =>{
+    const username = req.body.loginUsername;
+    if(!username || username === ''){
+        return res.status(400).json({ message: 'Not Entered Username'});
+    }
+
+    const password = req.body.loginPassword;
+    if(!password || password === ''){
+        return res.status(400).json({ message: 'Not Entered Password'});
+    }
+
+    await loginUser(req, res);
 });
 
 usersController.put('/edit/:username', async (req, res) => {
