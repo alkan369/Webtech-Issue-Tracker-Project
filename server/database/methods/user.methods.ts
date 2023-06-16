@@ -117,7 +117,7 @@ export async function loginUser(
         //     return;
         // }
         // console.log("Before Status 200");
-        res.status(400).json({ message: `Welcome Back ${searchedUser.username}` });
+        res.status(200).json({ message: 'OK'});
         // console.log("After Status 200");
     }
     catch(error){

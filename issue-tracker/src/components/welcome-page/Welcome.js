@@ -35,7 +35,7 @@ function App() {
     axios
       .post('/api/users/create', registrationData)
       .then((response) => {
-        alert('Registration successful!');
+        alert('Welcome to IssueTracker!');
       })
       .catch((error) => {
         alert(error.response.data.message);
@@ -51,7 +51,7 @@ function App() {
     axios
       .post('/api/users/login', loginData)
       .then((response) => {
-        alert("Login successful");
+        alert(`Welcome back ${loginUsername}!`);
       })
       .catch((error) => {
         alert(error.response.data.message);

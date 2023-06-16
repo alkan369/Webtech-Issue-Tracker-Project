@@ -134,36 +134,32 @@ usersController.post('/create', async (req, res) => {
     // }
 
     if(!req.body.firstName || req.body.firstName === ""){
-        return res.status(400).json({ message: 'Not First Name Entered' });
+        return res.status(400).json({ message: 'Enter your first name.' });
     }
 
     if(!req.body.lastName || req.body.lastName === ""){
-        return res.status(400).json({ message: 'Not Last Name Entered' });
+        return res.status(400).json({ message: 'Enter your last name.' });
     }
 
     if(!req.body.username || req.body.username === ""){
-        return res.status(400).json({ message: 'Not Username Entered' });
+        return res.status(400).json({ message: 'Enter a username.' });
     }
 
     if(!req.body.email || req.body.email === ""){
-        return res.status(400).json({ message: 'Not Email Entered' });
+        return res.status(400).json({ message: 'Enter an e-mail.' });
     }
 
     if(!req.body.password || req.body.password === ""){
-        return res.status(400).json({ message: 'Not Password Entered' });
+        return res.status(400).json({ message: 'Enter a password.' });
     }
 
-    if(!req.body.confirmPassword || req.body.confirmPassword === ""){
-        return res.status(400).json({ message: 'Not Confirm Password Entered' });
-    }
-    
     if(req.body.password !== req.body.confirmPassword){
-        return res.status(400).json({ message: 'Password and Confirm Password Dont Match' });
+        return res.status(400).json({ message: 'Passwords don\'t match.' });
     }
     
     const userWithSuchUsername = await UserModel.findOne({ username: req.body.username });
     if (userWithSuchUsername) {
-        return res.status(400).json({ message: 'User With Such Username Already Exists' });
+        return res.status(400).json({ message: 'Username already taken.' });
     }
     
     const userWithSuchEmail = await UserModel.findOne({ email: req.body.email });
@@ -172,11 +168,11 @@ usersController.post('/create', async (req, res) => {
         // //   console.log("LINE 142 : ");
         // //   console.log());
         // //   console.log("\nafter header\n");
-        return res.status(400).json({ message: 'User With Such Email Already Exists' });
+        return res.status(400).json({ message: 'E-mail already registered.' });
     }
 
     if(req.body.password.length < 8){
-        return res.status(400).json({ message: 'User Password Must Be Atleast 8 Characters' });
+        return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
     }
 
     // const newUser = new UserModel({
@@ -206,12 +202,12 @@ usersController.post('/create', async (req, res) => {
 usersController.post('/login', async (req, res) =>{
     const username = req.body.loginUsername;
     if(!username || username === ''){
-        return res.status(400).json({ message: 'Not Entered Username'});
+        return res.status(400).json({ message: 'Enter a username.'});
     }
 
     const password = req.body.loginPassword;
     if(!password || password === ''){
-        return res.status(400).json({ message: 'Not Entered Password'});
+        return res.status(400).json({ message: 'Enter a password.'});
     }
 
     await loginUser(req, res);
