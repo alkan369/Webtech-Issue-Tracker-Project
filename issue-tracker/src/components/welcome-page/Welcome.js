@@ -16,6 +16,10 @@ function App() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+
+
   const handleRegistration = () => {
     // Perform input validation and other checks
 
@@ -27,35 +31,29 @@ function App() {
       password,
     };
 
-    console.log(registrationData)
-
     axios
       .post('/api/users/create', registrationData)
       .then((response) => {
-        // Handle the server response if needed
         alert('Registration successful!');
       })
       .catch((error) => {
-        // Handle the error response if needed
-        alert(error.message);
+        alert(error.response.data.message);
       });
   };
 
   const handleLogin = () => {
     const loginData = {
-      email,
-      password,
+      loginEmail,
+      loginPassword,
     };
 
     axios
-      .post('/api/login', loginData)
+      .post('/api/users/login', loginData)
       .then((response) => {
-        // Handle the server response if needed
         alert('Login successful!');
       })
       .catch((error) => {
-        // Handle the error response if needed
-        alert('An error occurred during login.');
+        alert(error.response.data.message);
       });
   };
 
@@ -108,9 +106,9 @@ function App() {
         <div className="login">
           <label className='welcome-label' htmlFor="chk" aria-hidden="true" onClick={() => handleLoginVisibility()}>Login</label>
           <div id="login-box">
-            <input className='welcome-input' type="email" name="email" id="login_email" placeholder="Email" required onChange={(e) => setEmail(e.target.value)} value={email} />
+            <input className='welcome-input' type="email" name="email" id="login_email" placeholder="Email" required onChange={(e) => setLoginEmail(e.target.value)} value={loginEmail} />
             <div className="password-container">
-              <input className='welcome-input' type="password" name="pwd" id="login_password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} value={password} />
+              <input className='welcome-input' type="password" name="pwd" id="login_password" placeholder="Password" required onChange={(e) => setLoginPassword(e.target.value)} value={loginPassword} />
               <FontAwesomeIcon icon={loginPwdEyeClass} id="eye3" onClick={() => handleTogglePasswordVisibility('login_password')} />
             </div>
             <button className='welcome-button' id="logBtn" onClick={handleLogin}>Login</button>
