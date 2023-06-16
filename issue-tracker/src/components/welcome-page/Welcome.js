@@ -16,7 +16,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [loginEmail, setLoginEmail] = useState('');
+  const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
 
@@ -43,7 +43,7 @@ function App() {
 
   const handleLogin = () => {
     const loginData = {
-      loginEmail,
+      loginUsername,
       loginPassword,
     };
 
@@ -106,7 +106,7 @@ function App() {
         <div className="login">
           <label className='welcome-label' htmlFor="chk" aria-hidden="true" onClick={() => handleLoginVisibility()}>Login</label>
           <div id="login-box">
-            <input className='welcome-input' type="email" name="email" id="login_email" placeholder="Email" required onChange={(e) => setLoginEmail(e.target.value)} value={loginEmail} />
+            <input className='welcome-input' type="text" name="txt" id="login_username" placeholder="Username" required onChange={(e) => setLoginUsername(e.target.value)} value={loginUsername} />
             <div className="password-container">
               <input className='welcome-input' type="password" name="pwd" id="login_password" placeholder="Password" required onChange={(e) => setLoginPassword(e.target.value)} value={loginPassword} />
               <FontAwesomeIcon icon={loginPwdEyeClass} id="eye3" onClick={() => handleTogglePasswordVisibility('login_password')} />
