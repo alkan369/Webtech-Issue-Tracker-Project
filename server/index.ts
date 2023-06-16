@@ -22,6 +22,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../issue-tracker/build', 'index.html'));
 });
 
+
+
 app.listen(PORT, () => {
     connect(DB_CONNECTION as string, {
         useNewUrlParser: true,
