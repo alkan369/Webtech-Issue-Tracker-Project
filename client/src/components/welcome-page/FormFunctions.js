@@ -55,6 +55,8 @@ export function handleRegistration(navigate, registrationData) {
       navigate('/tickets');
     })
     .catch((error) => {
+      if (error.response.data.message === "return")
+        return
       alert(error.response.data.message);
     });
 }
@@ -67,6 +69,8 @@ export function handleLogin(navigate, loginData) {
       navigate('/tickets');
     })
     .catch((error) => {
+      if (error.response.data.message === "return")
+        return
       alert(error.response.data.message);
     });
 }

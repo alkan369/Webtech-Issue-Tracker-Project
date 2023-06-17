@@ -133,28 +133,32 @@ usersController.post('/create', async (req, res) => {
     //     return res.status(500).json({ message: error });
     // }
 
-    if(!req.body.firstName || req.body.firstName === ""){
-        return res.status(400).json({ message: 'Enter your first name.' });
+    if(!req.body.firstName || req.body.firstName === "" ){
+        return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.lastName || req.body.lastName === ""){
-        return res.status(400).json({ message: 'Enter your last name.' });
+        return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.username || req.body.username === ""){
-        return res.status(400).json({ message: 'Enter a username.' });
+        return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.email || req.body.email === ""){
-        return res.status(400).json({ message: 'Enter an e-mail.' });
+        return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.password || req.body.password === ""){
-        return res.status(400).json({ message: 'Enter a password.' });
+        return res.status(400).json({ message: 'return' });
     }
 
     if(req.body.password !== req.body.confirmPassword){
-        return res.status(400).json({ message: 'Passwords don\'t match.' });
+        return res.status(400).json({ message: 'return' });
+    }
+
+    if(req.body.password.length < 8){
+        return res.status(400).json({ message: 'return' });
     }
     
     const userWithSuchUsername = await UserModel.findOne({ username: req.body.username });
@@ -169,10 +173,6 @@ usersController.post('/create', async (req, res) => {
         // //   console.log());
         // //   console.log("\nafter header\n");
         return res.status(400).json({ message: 'E-mail already registered.' });
-    }
-
-    if(req.body.password.length < 8){
-        return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
     }
 
     // const newUser = new UserModel({
@@ -202,12 +202,12 @@ usersController.post('/create', async (req, res) => {
 usersController.post('/login', async (req, res) =>{
     const username = req.body.loginUsername;
     if(!username || username === ''){
-        return res.status(400).json({ message: 'Enter a username.'});
+        return res.status(400).json({ message: 'return' });
     }
 
     const password = req.body.loginPassword;
     if(!password || password === ''){
-        return res.status(400).json({ message: 'Enter a password.'});
+        return res.status(400).json({ message: 'return' });
     }
 
     await loginUser(req, res);

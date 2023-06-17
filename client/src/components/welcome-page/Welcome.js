@@ -32,7 +32,7 @@ function App() {
   };
 
   return (
-    <div className="body-welcome">
+    <form className="body-welcome">
       <div className="main">
         <input 
           type="checkbox" 
@@ -47,78 +47,89 @@ function App() {
               onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
               Register
             </label>
-            <input 
-              className='welcome-input' 
-              type="text" 
-              name="txt" 
-              placeholder="First Name" 
-              required 
-              onChange={(e) => formState.setFirstName(e.target.value)} 
-              value={formState.firstName} 
-            />
-            <input 
-              className='welcome-input' 
-              type="text" 
-              name="txt" 
-              placeholder="Last Name" 
-              required 
-              onChange={(e) => formState.setLastName(e.target.value)} 
-              value={formState.lastName} 
-            />
-            <input 
-              className='welcome-input' 
-              type="text" 
-              name="txt" 
-              placeholder="Username" 
-              required 
-              onChange={(e) => formState.setUsername(e.target.value)} 
-              value={formState.username} 
-            />
-            <input 
-              className='welcome-input' 
-              type="email" 
-              name="email" 
-              placeholder="Email" 
-              required 
-              onChange={(e) => formState.setEmail(e.target.value)} 
-              value={formState.email} 
-            />
-            <div className="password-container">
+            <div className={`register-box ${formState.isLoginVisible ? '' : 'show'}`}>
               <input 
                 className='welcome-input' 
-                type="password" 
-                name="pwd" 
-                id="reg_password" 
-                placeholder="Password" 
+                type="text" 
+                name="txt" 
+                placeholder="First Name" 
+                required
+                onChange={(e) => formState.setFirstName(e.target.value)} 
+                value={formState.firstName} 
+              />
+              <input 
+                className='welcome-input' 
+                type="text" 
+                name="txt" 
+                placeholder="Last Name" 
                 required 
-                onChange={(e) => formState.setPassword(e.target.value)} 
-                value={formState.password} 
+                onChange={(e) => formState.setLastName(e.target.value)} 
+                value={formState.lastName} 
               />
-              <FontAwesomeIcon 
-                icon={formState.regPwdEyeClass} 
-                onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)} 
-              />
-            </div>
-            <div className="password-container">
               <input 
                 className='welcome-input' 
-                type="password" 
-                name="cpwd" 
-                id="confirm_password" 
-                placeholder="Confirm Password" 
-                onChange={(e) => formState.setConfirmPassword(e.target.value)} 
-                value={formState.confirmPassword} 
+                type="text" 
+                name="txt" 
+                placeholder="Username" 
+                required 
+                pattern='^[A-Za-z0-9]{6,}$'
+                title='Username must be at least 6 non-special characters long'
+                onChange={(e) => formState.setUsername(e.target.value)} 
+                value={formState.username} 
               />
-              <FontAwesomeIcon 
-              icon={formState.confirmPwdEyeClass} 
-              onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)} 
-            />
+              <input 
+                className='welcome-input' 
+                type="email" 
+                name="email" 
+                placeholder="Email" 
+                required 
+                title='Enter a valid e-mail address'
+                onChange={(e) => formState.setEmail(e.target.value)} 
+                value={formState.email} 
+              />
+              <div className="password-container">
+                <input 
+                  className='welcome-input' 
+                  type="password" 
+                  name="pwd" 
+                  id="reg_password" 
+                  placeholder="Password" 
+                  required 
+                  pattern='[A-Za-z0-9@#$%^&+=_]{8,}'
+                  title='Password must be at least 8 characters long'
+                  onChange={(e) => formState.setPassword(e.target.value)} 
+                  value={formState.password} 
+                />
+                <FontAwesomeIcon 
+                  icon={formState.regPwdEyeClass} 
+                  onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)} 
+                />
+              </div>
+              <div className="password-container">
+                <input 
+                  className='welcome-input' 
+                  type="password" 
+                  name="cpwd" 
+                  id="confirm_password" 
+                  placeholder="Confirm Password"
+                  required
+                  title="Passwords don't match"
+                  pattern={formState.password}
+                  onChange={(e) => formState.setConfirmPassword(e.target.value)} 
+                  value={formState.confirmPassword} 
+                />
+                <FontAwesomeIcon 
+                icon={formState.confirmPwdEyeClass} 
+                onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)} 
+              />
+              </div>
+              <button
+                type="submit"
+                className='welcome-button' 
+                onClick={registration}>
+                Register
+              </button>
             </div>
-            <button 
-              className='welcome-button' 
-              onClick={registration}>
-              Register
-            </button>
         </div>
 
         <div className="login">
@@ -156,6 +167,7 @@ function App() {
               />
             </div>
             <button 
+              type="submit"
               className='welcome-button' 
               onClick={login}>
               Login
@@ -167,7 +179,7 @@ function App() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
