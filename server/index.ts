@@ -16,10 +16,10 @@ connectAPI(app, '/api');
 const PORT = process.env.PORT || 3001;
 const DB_CONNECTION = process.env.DB_CONNECTION_STRING;
 
-app.use(express.static(path.join(__dirname, '../../issue-tracker/build')));
+app.use(express.static(path.join(__dirname, '../../client/build')));
 app.use(bodyParser.json());
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../issue-tracker/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
 
 

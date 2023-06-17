@@ -2,7 +2,7 @@
 
 The project consists of 4 parts: 
 * Frontend(Login/Register)
-* Frontend(Issue-Tracker)
+* Frontend(client)
 * Backend(Server)
 * Database(MongoDB)
 
@@ -20,7 +20,7 @@ To be updated
 
 ---
 
-## Frontend(Issue-Tracker)
+## Frontend(client)
 
 To be updated
 
