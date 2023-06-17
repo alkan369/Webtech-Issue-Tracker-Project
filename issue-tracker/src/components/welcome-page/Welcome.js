@@ -43,11 +43,11 @@ function App() {
             <input className='welcome-input' type="email" name="email" id="reg_email" placeholder="Email" required onChange={(e) => formState.setEmail(e.target.value)} value={formState.email} />
             <div className="password-container">
               <input className='welcome-input' type="password" name="pwd" id="reg_password" placeholder="Password" required onChange={(e) => formState.setPassword(e.target.value)} value={formState.password} />
-              <FontAwesomeIcon icon={formState.regPwdEyeClass} id="eye1" onClick={() => handleTogglePasswordVisibility('reg_password')} />
+              <FontAwesomeIcon icon={formState.regPwdEyeClass} id="eye1" onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)} />
             </div>
             <div className="password-container">
               <input className='welcome-input' type="password" name="cpwd" id="confirm_password" placeholder="Confirm Password" onChange={(e) => formState.setConfirmPassword(e.target.value)} value={formState.confirmPassword} />
-              <FontAwesomeIcon icon={formState.confirmPwdEyeClass} id="eye2" onClick={() => handleTogglePasswordVisibility('confirm_password')} />
+              <FontAwesomeIcon icon={formState.confirmPwdEyeClass} id="eye2" onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)} />
             </div>
             <button className='welcome-button' id="regBtn" onClick={registration}>Register</button>
         </div>
@@ -58,7 +58,7 @@ function App() {
             <input className='welcome-input' type="text" name="txt" id="login_username" placeholder="Username" required onChange={(e) => formState.setLoginUsername(e.target.value)} value={formState.loginUsername} />
             <div className="password-container">
               <input className='welcome-input' type="password" name="pwd" id="login_password" placeholder="Password" required onChange={(e) => formState.setLoginPassword(e.target.value)} value={formState.loginPassword} />
-              <FontAwesomeIcon icon={formState.loginPwdEyeClass} id="eye3" onClick={() => handleTogglePasswordVisibility('login_password')} />
+              <FontAwesomeIcon icon={formState.loginPwdEyeClass} id="eye3" onClick={() => handleTogglePasswordVisibility('login_password', formState.setLoginPwdEyeClass)} />
             </div>
             <button className='welcome-button' id="logBtn" onClick={login}>Login</button>
             <img src={logo} alt="Logo" />
