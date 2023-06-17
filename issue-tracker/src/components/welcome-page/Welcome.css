@@ -12,7 +12,6 @@
 	background-position: center center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
-	/* background: linear-gradient(to bottom, #313131, #7d7c7c, #313131); */
 }
 .welcome-label{
 	color: #fff; 
@@ -111,12 +110,12 @@
 }
 
 
-#login-box {
+.login-box {
 	visibility: hidden;
 	transition: visibility .6s linear;
 }
 
-#login-box.show {
+.login-box.show {
 	visibility: visible;
 }
 

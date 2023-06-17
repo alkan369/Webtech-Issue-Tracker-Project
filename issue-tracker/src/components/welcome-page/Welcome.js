@@ -44,13 +44,12 @@ function App() {
               className='welcome-label' 
               htmlFor="chk" 
               aria-hidden="true" 
-              onClick={() => handleLoginVisibility()}>
+              onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
               Register
             </label>
             <input 
               className='welcome-input' 
               type="text" 
-              id="fname" 
               name="txt" 
               placeholder="First Name" 
               required 
@@ -60,7 +59,6 @@ function App() {
             <input 
               className='welcome-input' 
               type="text" 
-              id="lname" 
               name="txt" 
               placeholder="Last Name" 
               required 
@@ -71,7 +69,6 @@ function App() {
               className='welcome-input' 
               type="text" 
               name="txt" 
-              id="reg_username" 
               placeholder="Username" 
               required 
               onChange={(e) => formState.setUsername(e.target.value)} 
@@ -81,7 +78,6 @@ function App() {
               className='welcome-input' 
               type="email" 
               name="email" 
-              id="reg_email" 
               placeholder="Email" 
               required 
               onChange={(e) => formState.setEmail(e.target.value)} 
@@ -100,7 +96,6 @@ function App() {
               />
               <FontAwesomeIcon 
                 icon={formState.regPwdEyeClass} 
-                id="eye1" 
                 onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)} 
               />
             </div>
@@ -116,13 +111,11 @@ function App() {
               />
               <FontAwesomeIcon 
               icon={formState.confirmPwdEyeClass} 
-              id="eye2" 
               onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)} 
             />
             </div>
             <button 
               className='welcome-button' 
-              id="regBtn" 
               onClick={registration}>
               Register
             </button>
@@ -133,15 +126,14 @@ function App() {
             className='welcome-label' 
             htmlFor="chk" 
             aria-hidden="true" 
-            onClick={() => handleLoginVisibility()}>
+            onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
             Login
           </label>
-          <div id="login-box">
+          <div className={`login-box ${formState.isLoginVisible ? 'show' : ''}`}>
             <input 
               className='welcome-input' 
               type="text" 
               name="txt" 
-              id="login_username" 
               placeholder="Username" 
               required 
               onChange={(e) => formState.setLoginUsername(e.target.value)} 
@@ -160,13 +152,11 @@ function App() {
               />
               <FontAwesomeIcon 
                 icon={formState.loginPwdEyeClass} 
-                id="eye3" 
                 onClick={() => handleTogglePasswordVisibility('login_password', formState.setLoginPwdEyeClass)} 
               />
             </div>
             <button 
               className='welcome-button' 
-              id="logBtn" 
               onClick={login}>
               Login
             </button>

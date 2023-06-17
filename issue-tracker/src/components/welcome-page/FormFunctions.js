@@ -6,6 +6,7 @@ export function useFormState() {
   const [regPwdEyeClass, setRegPwdEyeClass] = useState(faEye);
   const [confirmPwdEyeClass, setConfirmPwdEyeClass] = useState(faEye);
   const [loginPwdEyeClass, setLoginPwdEyeClass] = useState(faEye);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -15,6 +16,8 @@ export function useFormState() {
 
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+
+  const [isLoginVisible, setLoginVisibility] = useState(false);
 
   return {
     regPwdEyeClass,
@@ -39,6 +42,8 @@ export function useFormState() {
     setLoginUsername,
     loginPassword,
     setLoginPassword,
+    isLoginVisible,
+    setLoginVisibility
   };
 }
 
@@ -86,7 +91,6 @@ export function handleTogglePasswordVisibility(inputId, setEyeClass) {
   input.setAttribute('type', inputType);
 }
 
-export function handleLoginVisibility() {
-  const loginBox = document.getElementById('login-box');
-  loginBox.classList.toggle('show');
+export function handleLoginVisibility(setLoginVisibility, isLoginVisible) {
+  setLoginVisibility(!isLoginVisible);
 }
