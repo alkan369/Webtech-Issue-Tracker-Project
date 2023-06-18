@@ -34,21 +34,21 @@ To be updated
 
 ## Database(MongoDB)
 
-# MongoDB
+### MongoDB
 The database is created on MongoDB which is popular document-oriented NoSQL database
 designed for storing high-volume data. Unlike traditional relational databases with
 tables and rows, MongoDB organizes data into documents and collections. Each document
 consists of key-value pairs, and collections, which are sets of documents, are analogous
 to tables in relational databases.
 
-# Mongoose Library
+### Mongoose Library
 To facilitate working with MongoDB in Node.js, is used the Mongoose library. Mongoose
 serves as an Object Data Modeling (ODM) tool, providing higher-lever abstraction for
 MongoDB operations. It helps manage data relations, enforces schema validation, and
 facilitates the translation between objects in the code and their representation in
 MongoDB.
 
-# Issue-Tracker Database
+### Issue-Tracker Database
 The project's database consists of 3 collections - Users, Ticket and Projects. Every
 collection of the database is divided in 3 parts. The parts are schemas, models and methods.
 In the schema part are the schemas of the collections. The schemas define the document's
