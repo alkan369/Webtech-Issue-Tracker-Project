@@ -41,12 +41,14 @@ tables and rows, MongoDB organizes data into documents and collections. Each doc
 consists of key-value pairs, and collections, which are sets of documents, are analogous
 to tables in relational databases.
 
+
 ### Mongoose Library
 To facilitate working with MongoDB in Node.js, is used the Mongoose library. Mongoose
 serves as an Object Data Modeling (ODM) tool, providing higher-lever abstraction for
 MongoDB operations. It helps manage data relations, enforces schema validation, and
 facilitates the translation between objects in the code and their representation in
 MongoDB.
+
 
 ### Issue-Tracker Database
 The project's database consists of 3 collections - Users, Ticket and Projects. Every
