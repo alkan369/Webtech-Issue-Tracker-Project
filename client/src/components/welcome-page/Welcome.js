@@ -9,7 +9,8 @@ function App() {
   const navigate = useNavigate();
   const formState = useFormState();
 
-  const registration = () => {
+  const registration = (event) => {
+    event.preventDefault();
     const registrationData = {
       firstName: formState.firstName,
       lastName: formState.lastName,
@@ -22,7 +23,8 @@ function App() {
     handleRegistration(navigate, registrationData);
   };
 
-  const login = () => {
+  const login = (event) => {
+    event.preventDefault();
     const loginData = {
       loginUsername: formState.loginUsername,
       loginPassword: formState.loginPassword,
@@ -32,157 +34,157 @@ function App() {
   };
 
   return (
-    <form className="body-welcome">
+    <div className="body-welcome">
       <div className="main">
-        <input 
-          type="checkbox" 
-          id="chk" 
-          aria-hidden="true" 
+        <input
+          type="checkbox"
+          id="chk"
+          aria-hidden="true"
         />
-        <div className="register">
-            <label 
-              className='welcome-label' 
-              htmlFor="chk" 
-              aria-hidden="true" 
-              onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
-              Register
-            </label>
-            <div className={`register-box ${formState.isLoginVisible ? '' : 'show'}`}>
-              <input 
-                className='welcome-input' 
-                type="text" 
-                name="txt" 
-                placeholder="First Name" 
+        <form className="register" onSubmit={registration}>
+          <label
+            className='welcome-label'
+            htmlFor="chk"
+            aria-hidden="true"
+            onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
+            Register
+          </label>
+          <div className={`register-box ${formState.isLoginVisible ? '' : 'show'}`}>
+            <input
+              className='welcome-input'
+              type="text"
+              name="txt"
+              placeholder="First Name"
+              required
+              title='Please enter your first name'
+              onChange={(e) => formState.setFirstName(e.target.value)}
+              value={formState.firstName}
+            />
+            <input
+              className='welcome-input'
+              type="text"
+              name="txt"
+              placeholder="Last Name"
+              required
+              title='Please enter your last name'
+              onChange={(e) => formState.setLastName(e.target.value)}
+              value={formState.lastName}
+            />
+            <input
+              className='welcome-input'
+              type="text"
+              name="txt"
+              placeholder="Username"
+              required
+              pattern='^[A-Za-z0-9]{6,}$'
+              title='Username must be at least 6 non-special characters long'
+              onChange={(e) => formState.setUsername(e.target.value)}
+              value={formState.username}
+            />
+            <input
+              className='welcome-input'
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              pattern='([a-z0-9]+\.)*[a-z0-9]+@([a-z0-9]+\.)+[a-z0-9]+'
+              title='Enter a valid e-mail address'
+              onChange={(e) => formState.setEmail(e.target.value)}
+              value={formState.email}
+            />
+            <div className="password-container">
+              <input
+                className='welcome-input'
+                type="password"
+                name="pwd"
+                id="reg_password"
+                placeholder="Password"
                 required
-                title='Please enter your first name'
-                onChange={(e) => formState.setFirstName(e.target.value)} 
-                value={formState.firstName} 
+                pattern='[A-Za-z0-9@#$%^&+=_]{8,}'
+                title='Password must be at least 8 characters long'
+                onChange={(e) => formState.setPassword(e.target.value)}
+                value={formState.password}
               />
-              <input 
-                className='welcome-input' 
-                type="text" 
-                name="txt" 
-                placeholder="Last Name" 
-                required 
-                title='Please enter your last name'
-                onChange={(e) => formState.setLastName(e.target.value)} 
-                value={formState.lastName} 
+              <FontAwesomeIcon
+                icon={formState.regPwdEyeClass}
+                onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)}
               />
-              <input 
-                className='welcome-input' 
-                type="text" 
-                name="txt" 
-                placeholder="Username" 
-                required 
-                pattern='^[A-Za-z0-9]{6,}$'
-                title='Username must be at least 6 non-special characters long'
-                onChange={(e) => formState.setUsername(e.target.value)} 
-                value={formState.username} 
-              />
-              <input 
-                className='welcome-input' 
-                type="email" 
-                name="email" 
-                placeholder="Email" 
-                required 
-                pattern='^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'
-                title='Enter a valid e-mail address'
-                onChange={(e) => formState.setEmail(e.target.value)} 
-                value={formState.email} 
-              />
-              <div className="password-container">
-                <input 
-                  className='welcome-input' 
-                  type="password" 
-                  name="pwd" 
-                  id="reg_password" 
-                  placeholder="Password" 
-                  required 
-                  pattern='[A-Za-z0-9@#$%^&+=_]{8,}'
-                  title='Password must be at least 8 characters long'
-                  onChange={(e) => formState.setPassword(e.target.value)} 
-                  value={formState.password} 
-                />
-                <FontAwesomeIcon 
-                  icon={formState.regPwdEyeClass} 
-                  onClick={() => handleTogglePasswordVisibility('reg_password', formState.setRegPwdEyeClass)} 
-                />
-              </div>
-              <div className="password-container">
-                <input 
-                  className='welcome-input' 
-                  type="password" 
-                  name="cpwd" 
-                  id="confirm_password" 
-                  placeholder="Confirm Password"
-                  required
-                  title="Passwords don't match"
-                  pattern={formState.password}
-                  onChange={(e) => formState.setConfirmPassword(e.target.value)} 
-                  value={formState.confirmPassword} 
-                />
-                <FontAwesomeIcon 
-                icon={formState.confirmPwdEyeClass} 
-                onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)} 
-              />
-              </div>
-              <button
-                type="submit"
-                className='welcome-button' 
-                onClick={registration}>
-                Register
-              </button>
             </div>
-        </div>
+            <div className="password-container">
+              <input
+                className='welcome-input'
+                type="password"
+                name="cpwd"
+                id="confirm_password"
+                placeholder="Confirm Password"
+                required
+                title="Passwords don't match"
+                pattern={formState.password}
+                onChange={(e) => formState.setConfirmPassword(e.target.value)}
+                value={formState.confirmPassword}
+              />
+              <FontAwesomeIcon
+                icon={formState.confirmPwdEyeClass}
+                onClick={() => handleTogglePasswordVisibility('confirm_password', formState.setConfirmPwdEyeClass)}
+              />
+            </div>
+            <button
+              type="submit"
+              className='welcome-button'
+            >
+              Register
+            </button>
+          </div>
+        </form>
 
-        <div className="login">
-          <label 
-            className='welcome-label' 
-            htmlFor="chk" 
-            aria-hidden="true" 
+        <form className="login" onSubmit={login}>
+          <label
+            className='welcome-label'
+            htmlFor="chk"
+            aria-hidden="true"
             onClick={() => handleLoginVisibility(formState.setLoginVisibility, formState.isLoginVisible)}>
             Login
           </label>
           <div className={`login-box ${formState.isLoginVisible ? 'show' : ''}`}>
-            <input 
-              className='welcome-input' 
-              type="text" 
-              name="txt" 
-              placeholder="Username" 
-              required 
-              onChange={(e) => formState.setLoginUsername(e.target.value)} 
-              value={formState.loginUsername} 
+            <input
+              className='welcome-input'
+              type="text"
+              name="txt"
+              placeholder="Username"
+              required
+              onChange={(e) => formState.setLoginUsername(e.target.value)}
+              value={formState.loginUsername}
             />
             <div className="password-container">
-              <input 
-                className='welcome-input' 
-                type="password" 
-                name="pwd" 
-                id="login_password" 
-                placeholder="Password" 
-                required 
-                onChange={(e) => formState.setLoginPassword(e.target.value)} 
-                value={formState.loginPassword} 
+              <input
+                className='welcome-input'
+                type="password"
+                name="pwd"
+                id="login_password"
+                placeholder="Password"
+                required
+                onChange={(e) => formState.setLoginPassword(e.target.value)}
+                value={formState.loginPassword}
               />
-              <FontAwesomeIcon 
-                icon={formState.loginPwdEyeClass} 
-                onClick={() => handleTogglePasswordVisibility('login_password', formState.setLoginPwdEyeClass)} 
+              <FontAwesomeIcon
+                icon={formState.loginPwdEyeClass}
+                onClick={() => handleTogglePasswordVisibility('login_password', formState.setLoginPwdEyeClass)}
               />
             </div>
-            <button 
+            <button
               type="submit"
-              className='welcome-button' 
-              onClick={login}>
+              className='welcome-button'
+            >
               Login
             </button>
-            <img 
-              src={logo} 
-              alt="Logo" 
+            <img
+              src={logo}
+              alt="Logo"
             />
           </div>
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
 
