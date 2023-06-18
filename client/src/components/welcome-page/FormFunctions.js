@@ -65,7 +65,7 @@ export function handleLogin(navigate, loginData) {
   axios
     .post('/api/users/login', loginData)
     .then((response) => {
-      alert(`Welcome back ${loginData.loginUsername}!`);
+      alert(response.data.message);
       navigate('/tickets');
     })
     .catch((error) => {

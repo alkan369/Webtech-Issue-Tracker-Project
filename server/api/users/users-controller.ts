@@ -134,30 +134,48 @@ usersController.post('/create', async (req, res) => {
     // }
 
     if(!req.body.firstName || req.body.firstName === "" ){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.lastName || req.body.lastName === ""){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.username || req.body.username === ""){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.email || req.body.email === ""){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(!req.body.password || req.body.password === ""){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(req.body.password !== req.body.confirmPassword){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     if(req.body.password.length < 8){
+        // message 'return' is returned because the custom message is handled by the frontend
+        return res.status(400).json({ message: 'return' });
+    }
+
+    let regex: RegExp = new RegExp('^[A-Za-z0-9]{6,}$');
+    if(!regex.test(req.body.username)) {
+        // message 'return' is returned because the custom message is handled by the frontend
+        return res.status(400).json({ message: 'return' });
+    }
+
+    regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    if(!regex.test(req.body.email)) {
         return res.status(400).json({ message: 'return' });
     }
     
@@ -202,11 +220,13 @@ usersController.post('/create', async (req, res) => {
 usersController.post('/login', async (req, res) =>{
     const username = req.body.loginUsername;
     if(!username || username === ''){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 
     const password = req.body.loginPassword;
     if(!password || password === ''){
+        // message 'return' is returned because the custom message is handled by the frontend
         return res.status(400).json({ message: 'return' });
     }
 

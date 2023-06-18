@@ -54,6 +54,7 @@ function App() {
                 name="txt" 
                 placeholder="First Name" 
                 required
+                title='Please enter your first name'
                 onChange={(e) => formState.setFirstName(e.target.value)} 
                 value={formState.firstName} 
               />
@@ -63,6 +64,7 @@ function App() {
                 name="txt" 
                 placeholder="Last Name" 
                 required 
+                title='Please enter your last name'
                 onChange={(e) => formState.setLastName(e.target.value)} 
                 value={formState.lastName} 
               />
@@ -83,6 +85,7 @@ function App() {
                 name="email" 
                 placeholder="Email" 
                 required 
+                pattern='^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'
                 title='Enter a valid e-mail address'
                 onChange={(e) => formState.setEmail(e.target.value)} 
                 value={formState.email} 
