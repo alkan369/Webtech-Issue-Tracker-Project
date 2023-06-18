@@ -1,10 +1,6 @@
 import { Router } from "express";
-import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from "../../interfaces/ticket";
-import mongoose from "mongoose";
 import { UserModel } from "../../database/models/user.model";
-import { genSaltSync, hashSync } from "bcrypt";
 import { createUser, deleteUser, getAllUsers, getUserByEmail, getUserByFirstName, getUserByLastName, getUserByUsername, loginUser, updateUser } from "../../database/methods/user.methods";
-// import { tickets } from "../pseudoDB";
 
 const usersController = Router();
 

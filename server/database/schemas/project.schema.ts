@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose';
 
+export const validProjectStatus = ['In progress', 'Done'];
+
 export const ProjectSchema = new Schema({
     id: Schema.Types.ObjectId,
     projectName: {
@@ -9,7 +11,7 @@ export const ProjectSchema = new Schema({
     },
     description: {
         type: Schema.Types.String,
-        default: "",
+        default: '',
     },
     startDate: {
         type: Schema.Types.Date,
@@ -21,7 +23,7 @@ export const ProjectSchema = new Schema({
     },
     status: {
         type: Schema.Types.String,
-        default: "In progress",
+        default: 'In progress',
         enum: ['In progress', 'Done'],
     }
 })

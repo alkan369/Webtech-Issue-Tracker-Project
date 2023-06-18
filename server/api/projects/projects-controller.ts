@@ -1,15 +1,11 @@
 import { Router } from "express";
-import { Ticket, validTicketStatus, TicketRequest, validTicketPriorities } from "../../interfaces/ticket";
-import mongoose from "mongoose";
 import { ProjectModel } from "../../database/models/project.model";
-import { UserModel } from "../../database/models/user.model";
 import { getAllProjects, getProjectByName, getProjectByStatus,
 createProject, 
 updateProject,
 deleteProject} from "../../database/methods/project.methods";
-import { validProjectStatus } from "../../database/types/project.types";
+import { validProjectStatus } from "../../database/schemas/project.schema";
 import { TicketModel } from "../../database/models/ticket.model";
-// import { tickets } from "../pseudoDB";
 
 const projectsController = Router();
 

@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose';
-import { getTicketByStatus } from '../methods/ticket.methods';
+
+export const validTicketStatus = ['Open', 'In progress', 'Resolved'];
+export const validTicketPriorities = ['Low', 'Medium', "High"];
 
 export const TicketSchema = new Schema({
     id: Schema.Types.ObjectId,
@@ -10,15 +12,15 @@ export const TicketSchema = new Schema({
     },
     description: {
         type: Schema.Types.String,
-        default: "",
+        default: '',
     },
     projectName: {
         type: Schema.Types.String,
-        default: "",
+        default: '',
     },
     assignedTo: {
         type: Schema.Types.String,
-        default: "",
+        default: '',
     },
     createDate: {
         type: Schema.Types.Date,
