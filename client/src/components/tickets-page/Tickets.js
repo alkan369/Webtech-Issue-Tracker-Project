@@ -139,8 +139,8 @@ const App = () => {
     const sortBy = event.target.value;
     const sortedIssues = [...issues];
 
-    if (sortBy === 'name') {
-      sortedIssues.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortBy === 'project') {
+      sortedIssues.sort((a, b) => a.projectName.localeCompare(b.projectName));
     } else if (sortBy === 'assignee') {
       sortedIssues.sort((a, b) => a.assignee.localeCompare(b.assignee));
     } else if (sortBy === 'priority-low-to-high') {
@@ -263,7 +263,7 @@ const App = () => {
       </main>
       <select onChange={sortFunction}>
         <option value="">Sort by:</option>
-        <option value="name">Title</option>
+        <option value="name">Project</option>
         <option value="assignee">Assignee</option>
         <option value="priority-low-to-high">Priority (Low to High)</option>
         <option value="status-open-to-closed">Status (Open to Closed)</option>
