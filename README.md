@@ -21,8 +21,14 @@ To be updated
 ---
 
 ## Frontend(client)
+The frontend is created with React. The project is divided in 3 parts. The parts are
+Dashboard, Tickets and Projects. The Dashboard part is the main part of the project. It
+contains the header, main content (which is both Tickets and Projects) and footer. The
+Tickets part contains the tickets of the project. The Projects part contains the projects
+of the users.
 
-To be updated
+Projects and Tickets follow the same structure. The documentations for what they do are in
+the Projects part. The only difference is the API calls.
 
 ---
 

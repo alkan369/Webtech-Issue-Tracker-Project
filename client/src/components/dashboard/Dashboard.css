@@ -1,0 +1,126 @@
+.ticket-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .ticket-header {
+    background-color: #222;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .ticket-main {
+    padding: 2rem;
+  }
+  
+  .lists-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .ticket-list,
+  .ticket-project {
+    width: 45%;
+  }
+  
+  .ticket-select {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+  
+  .ticket-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    background-color: #f6f6f6;
+    padding: 2rem;
+    border-radius: 0.5rem;
+  }
+  
+  .ticket-label {
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+  
+  .ticket-input,
+  .ticket-textarea,
+  .ticket-select {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    font-size: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .ticket-textarea {
+    height: 9.375rem;
+  }
+  
+  .ticket-button {
+    padding: 1rem 2rem;
+    border: none;
+    background-color: #6d6d6d;
+    color: #fff;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+  
+  .ticket-button:hover {
+    background-color: #0062cc;
+  }
+  
+  .issue {
+    border: 0.0625rem solid #3500f3;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.3125rem;
+    width: 100%; 
+  }
+  
+  .project {
+    border: 0.0625rem solid #03eef7;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.3125rem;
+  }
+  
+  .list-heading {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .edit-button {
+    padding: 1rem 2rem;
+    border: none;
+    background-color: #6d6d6d;
+    color: #fff;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+  
+  .edit-button:hover {
+    background-color: #0062cc;
+  }
+  
+  .delete-button {
+    padding: 1rem 2rem;
+    border: none;
+    background-color: #6d6d6d;
+    color: #fff;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+  
+  .delete-button:hover {
+    background-color: #0062cc;
+  }
