@@ -29,6 +29,7 @@ const App = () => {
         console.error('Error:', error);
       });
   }
+  fetchTickets();
 
   // const editTicket = async (ticket) => {
   //   fetch(`http://localhost:3000/api/tickets/edit/${ticket.title}`, {
@@ -227,7 +228,7 @@ const App = () => {
   // );
 
   const issueListItems = issues.map((issue, index) => (
-    <form className={'ticket-form'}>
+    <div className={'ticket-form'}>
       <h2 className="issue-title">{issue.title}</h2>
       <p>{issue.project}</p>
       <p className="issue-assignee">
@@ -244,30 +245,29 @@ const App = () => {
       <button className="delete-button" onClick={() => handleDelete(index)}>
         Delete
       </button>
-    </form>
+    </div>
   ));
 
   return (
     <div>
       <header className="ticket-header1">
-        {/* <img src={logo} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
         <h1 style={{ marginLeft: '60px' }}>Tickets</h1>
       </header>
       <main className="ticket-main">
         {createIssueButton}
+        <select className="ticket-select" onChange={sortFunction}>
+          <option value="">Sort by:</option>
+          <option value="name">Project</option>
+          <option value="assignee">Assignee</option>
+          <option value="priority-Low-to-High">Priority (Low to High)</option>
+          <option value="status-Open-to-Resolved">Status (Open to Resolved)</option>
+        </select>
         {newIssueForm}
         {/* {editIssueForm} */}
         <div className="ticket-list" id="issue-list">
           {issueListItems}
         </div>
       </main>
-      <select className="ticket-select" onChange={sortFunction}>
-        <option value="">Sort by:</option>
-        <option value="name">Project</option>
-        <option value="assignee">Assignee</option>
-        <option value="priority-Low-to-High">Priority (Low to High)</option>
-        <option value="status-Open-to-Resolved">Status (Open to Resolved)</option>
-      </select>
     </div>
   );
 };

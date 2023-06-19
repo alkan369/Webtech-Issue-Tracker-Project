@@ -25,7 +25,7 @@ const App = () => {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log('Success:', data);
+        console.log('Success:', data);
         fetchProjects();
       })
       .catch((error) => {
@@ -33,7 +33,7 @@ const App = () => {
         console.error('Error:', error);
       });
   }
-
+  fetchProjects();
   /// Edit project via API call to backend
   /// then fetch projects from backend to update state
   // const editProject = async (project) => {
@@ -148,9 +148,7 @@ const App = () => {
     const sortedIssues = [...issues];
 
     if (sortBy === 'name') {
-      sortedIssues.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortBy === 'assignee') {
-      sortedIssues.sort((a, b) => a.assignee.localeCompare(b.assignee));
+      sortedIssues.sort((a, b) => a.projectName.localeCompare(b.projectName));
     } else if (sortBy === 'priority-Low-to-High') {
       sortedIssues.sort((a, b) => {
         const priorityOrder = { Low: 1, Medium: 2, High: 3 };
@@ -231,12 +229,12 @@ const App = () => {
   /// Map projects to JSX
   const issueListItems = issues.map((issue, index) => (
     <form className={'ticket-form'}>
-      <h2 className="project-title">{issue.projectTitle}</h2>
+      <h2 className="project-title">{issue.projectName}</h2>
       <p className="project-priority">
-        <strong>Priority:</strong> {issue.projectPriority}
+        <strong>Priority:</strong> {issue.priority}
       </p>
       <p className="project-status">
-        <strong>Status:</strong> {issue.projectStatus}
+        <strong>Status:</strong> {issue.status}
       </p>
       {/* <button className="edit-button" onClick={() => handleEdit(index)}> Edit </button> */}
       <button className="delete-button" onClick={() => handleDelete(index)}>
@@ -254,19 +252,19 @@ const App = () => {
       </header>
       <main className="ticket-main">
         {createIssueButton}
+        <select className="ticket-select" onChange={sortFunction}>
+          <option value="">Sort by:</option>
+          <option value="name">Title</option>
+          <option value="assignee">Assignee</option>
+          <option value="priority-Low-to-High">Priority (Low to High)</option>
+          <option value="status-In Progress-to-Done">Status (In Progress to Done)</option>
+        </select>
         {newIssueForm}
         {/* {editIssueForm} */}
         <div id="issue-list" className="ticket-project">
           {issueListItems}
         </div>
       </main>
-      <select className="ticket-select" onChange={sortFunction}>
-        <option value="">Sort by:</option>
-        <option value="name">Title</option>
-        <option value="assignee">Assignee</option>
-        <option value="priority-Low-to-High">Priority (Low to High)</option>
-        <option value="status-In Progress-to-Done">Status (In Progress to Done)</option>
-      </select>
     </div>
   );
 };
