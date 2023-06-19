@@ -3,7 +3,7 @@ import './Projects.css';;
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
+  // const [showEditForm, setShowEditForm] = useState(false);
   const [issues, setIssues] = useState([]);
 
   /// Fetch projects from backend
@@ -35,23 +35,23 @@ const App = () => {
 
   /// Edit project via API call to backend
   /// then fetch projects from backend to update state
-  const editProject = async (project) => {
-    fetch(`http://localhost:3001/projects/edit/${project.title}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(project),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // console.log('Success:', data);
-        fetchProjects();
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
+  // const editProject = async (project) => {
+  //   fetch(`http://localhost:3001/projects/edit/${project.title}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(project),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       // console.log('Success:', data);
+  //       fetchProjects();
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
 
   /// Delete project via API call to backend
   /// then fetch projects from backend to update state
@@ -73,8 +73,8 @@ const App = () => {
   /// TODO: Add validation
   const handleSubmit = (event) => {
     event.preventDefault();
-    const projectTitle = document.getElementById('project-title-input').value;
-    const projectDescription = document.getElementById('project-description-input').value;
+    const projectTitle = document.getElementById('title-input').value;
+    const projectDescription = document.getElementById('description-input').value;
     const projectPriority = document.getElementById('project-priority-select').value;
     const projectStatus = document.getElementById('project-status-select').value;
   
@@ -92,44 +92,45 @@ const App = () => {
 
   /// Handle form submission for editing a project
   /// TODO: Add validation
-  const handleEdit = (index) => {
-    const updatedIssues = [...issues];
-    const project = updatedIssues[index];
-    toggleForm(true);
-    document.getElementById('project-title-input').value = project.projectTitle;
-    document.getElementById('project-description-input').value = project.description;
-    document.getElementById('project-priority-select').value = project.projectPriority;
-    document.getElementById('project-status-select').value = project.projectStatus;
-  };
+  // const handleEdit = (index) => {
+  //   const updatedIssues = [...issues];
+  //   const project = updatedIssues[index];
+  //   toggleForm(true);
+  //   document.getElementById('project-title-input').value = project.projectTitle;
+  //   document.getElementById('project-description-input').value = project.description;
+  //   document.getElementById('project-priority-select').value = project.projectPriority;
+  //   document.getElementById('project-status-select').value = project.projectStatus;
+  // };
 
-  const handleEditSubmit = (event) => { 
-    event.preventDefault();
-    const projectTitle = document.getElementById('project-title-input').value;
-    const projectDescription = document.getElementById('project-description-input').value;
-    const projectPriority = document.getElementById('project-priority-select').value;
-    const projectStatus = document.getElementById('project-status-select').value;
+  // const handleEditSubmit = (event) => { 
+  //   event.preventDefault();
+  //   const projectTitle = document.getElementById('title-input').value;
+  //   const projectDescription = document.getElementById('description-input').value;
+  //   const projectPriority = document.getElementById('priority-select').value;
+  //   const projectStatus = document.getElementById('status-select').value;
 
-    const updatedIssue = {
-      projectTitle: projectTitle,
-      description: projectDescription,
-      projectPriority,
-      projectStatus,
-    };
+  //   const updatedIssue = {
+  //     projectTitle: projectTitle,
+  //     description: projectDescription,
+  //     projectPriority,
+  //     projectStatus,
+  //   };
 
-    editProject(updatedIssue);
-    setShowEditForm(false);
-    event.target.reset();
-  };
+  //   editProject(updatedIssue);
+  //   setShowEditForm(false);
+  //   event.target.reset();
+  // };
     
 
   ///Toggle form visibility for creating a new project or editing an existing project
   const toggleForm = (isEdit = false) => {
-    if(isEdit) {
-      setShowEditForm(!showEditForm);
-    }
-    else{
+    // console.log(isEdit)
+    // if(isEdit) {
+    //   setShowEditForm(!showEditForm);
+    // }
+    // else{
       setShowForm(!showForm);
-    }
+    // }
   };
 
   /// Handle delete project
@@ -200,32 +201,32 @@ const App = () => {
   );
 
   /// Form for editing an existing project (same as new project form but with different submit handler)
-  const editIssueForm = showEditForm && (
-    <form className = 'ticket-form' id="new-issue-form" onSubmit={handleEditSubmit}>
-    <label className = 'ticket-label' htmlFor="project-title-input">Project title:</label>
-    <input className = 'ticket-input' type="text" id="title-input" name="title-input" required />
-    <label className = 'ticket-label' htmlFor="project-description-input">Project Description:</label>
-    <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
-    <label className = 'ticket-label' htmlFor="project-input">Priority:</label>
-    <select className = 'ticket-select' class="ticket-select" id="project-priority-select" name="project-priority-select">
-      <option value="high">High</option>
-      <option value="medium" selected>Medium</option>
-      <option value="low">Low</option>
-    </select>
-    <label className = 'ticket-label' htmlFor="project-status-select">Status:</label>
-    <select className = 'ticket-select' id="project-status-select" name="project-status-select">
-      <option value="open">Open</option>
-      <option value="closed">Closed</option>
-      <option value="in-progress">In Progress</option>
-    </select>
-    <div>
-      <button className = 'edit-button' type="submit">Edit</button>
-      <button className = 'delete-button' type="button" id="cancel-button" onClick={toggleForm}>
-        Cancel
-      </button>
-    </div>
-  </form>
-  );
+  // const editIssueForm = showEditForm && (
+  //   <form className = 'ticket-form' id="new-issue-form" onSubmit={handleEditSubmit}>
+  //   <label className = 'ticket-label' htmlFor="project-title-input">Project title:</label>
+  //   <input className = 'ticket-input' type="text" id="title-input" name="title-input" required />
+  //   <label className = 'ticket-label' htmlFor="project-description-input">Project Description:</label>
+  //   <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
+  //   <label className = 'ticket-label' htmlFor="project-input">Priority:</label>
+  //   <select className = 'ticket-select' class="ticket-select" id="project-priority-select" name="project-priority-select">
+  //     <option value="high">High</option>
+  //     <option value="medium" selected>Medium</option>
+  //     <option value="low">Low</option>
+  //   </select>
+  //   <label className = 'ticket-label' htmlFor="project-status-select">Status:</label>
+  //   <select className = 'ticket-select' id="project-status-select" name="project-status-select">
+  //     <option value="open">Open</option>
+  //     <option value="closed">Closed</option>
+  //     <option value="in-progress">In Progress</option>
+  //   </select>
+  //   <div>
+  //     <button className = 'edit-button' type="submit">Edit</button>
+  //     <button className = 'delete-button' type="button" id="cancel-button" onClick={toggleForm(true)}>
+  //       Cancel
+  //     </button>
+  //   </div>
+  // </form>
+  // );
 
   /// Map projects to JSX
   const issueListItems = issues.map((issue, index) => (
@@ -237,7 +238,7 @@ const App = () => {
       <p className="project-status">
         <strong>Status:</strong> {issue.projectStatus}
       </p>
-      <button className="edit-button" onClick={() => handleEdit(index)}> Edit </button>
+      {/* <button className="edit-button" onClick={() => handleEdit(index)}> Edit </button> */}
       <button className="delete-button" onClick={() => handleDelete(index)}>
         Delete
       </button>
@@ -247,14 +248,14 @@ const App = () => {
   /// Render
   return (
     <div>
-      <header className="ticket-header">
+      <header className="ticket-header2">
         {/* <img src={logo} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
         <h1 style={{ marginLeft: '60px' }}>Projects</h1>
       </header>
       <main className="ticket-main">
         {createIssueButton}
         {newIssueForm}
-        {editIssueForm}
+        {/* {editIssueForm} */}
         <div id="issue-list" className="ticket-project">
           {issueListItems}
         </div>

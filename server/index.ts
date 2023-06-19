@@ -4,12 +4,14 @@ import { ConnectOptions, connect } from 'mongoose';
 import { connect as connectAPI } from "./api/connect";
 import path from 'path';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 config()
 
 const app: Application = express();
 
 app.use(json());
+app.use(cors());
 
 connectAPI(app, '/api');
 
