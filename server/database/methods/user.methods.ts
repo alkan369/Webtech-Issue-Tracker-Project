@@ -3,6 +3,7 @@ import { UserModel } from "../models/user.model";
 import mongoose from "mongoose";
 import { genSaltSync, hashSync, compare } from "bcrypt";
 import { tokenGenerator } from "../../utils/token-generator";
+import { TicketModel } from "../models/ticket.model";
 
 export async function getAllUsers(
     req: express.Request,
@@ -143,6 +144,12 @@ export async function deleteUser(
     res: express.Response
 ): Promise<void> {
     try {
+
+        const tickets = await TicketModel.find({ assignedTo: req.params.username });
+        if(tickets.length !== 0){
+            res.status(400).json({ message: 'The User Has Tickets Attached To Him' });
+            return;
+        }
         const deletedUser = await UserModel.findOneAndDelete({ username: req.params.username });
 
         if (!deletedUser) {

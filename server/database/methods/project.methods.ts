@@ -1,6 +1,7 @@
 import express from "express";
 import { ProjectModel } from "../models/project.model";
 import mongoose from "mongoose";
+import { TicketModel } from "../models/ticket.model";
 
 
 export async function getAllProjects(
@@ -93,14 +94,19 @@ export async function deleteProject(
     res: express.Response
 ): Promise<void> {
     try {
-        const projectToBeDeleted = await ProjectModel.findOneAndDelete({ projectName: req.params.title });
+        const tickets = await TicketModel.find({ projectName: req.params.projectName });
+        if(tickets.length !== 0){
+            res.status(400).json({ message: 'The Project Has Tickets Attached To It' });
+            return;
+        }
+        const projectToBeDeleted = await ProjectModel.findOneAndDelete({ projectName: req.params.projectName });
         
         if (!projectToBeDeleted) {
-            res.status(400).json({ 'message': 'No Project With Such ProjectName' });
+            res.status(400).json({ message: 'No Project With Such ProjectName' });
             return;
         }
 
-        res.status(200).json({message: "Done!"});
+        res.status(200).json({ message: "Done!" });
     }
     catch (error) {
         res.status(500).json({ message: error });

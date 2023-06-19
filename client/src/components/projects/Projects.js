@@ -68,9 +68,11 @@ const App = () => {
     fetch(`http://localhost:3000/api/projects/delete/${title}`, {
       method: 'DELETE',
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
+      .then(response => response.json().then(data => ({ code: response.status, data })))
+      .then(result => {
+        if (result.code == 400) {
+          alert(result.data.message);
+        }
         fetchProjects();
       })
       .catch((error) => {
