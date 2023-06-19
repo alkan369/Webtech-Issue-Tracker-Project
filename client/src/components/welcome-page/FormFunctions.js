@@ -64,7 +64,7 @@ export function handleLogin(navigate, loginData) {
     .post('/api/users/login', loginData)
     .then((response) => {
       alert(response.data.message);
-      navigate('/dashboard');
+      navigate('/tickets');
     })
     .catch((error) => {
       alert(error.response.data.message);
