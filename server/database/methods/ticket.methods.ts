@@ -99,6 +99,7 @@ export async function createTicket(
         projectName: req.body.projectName,
         assignedTo: req.body.assignedTo,
         description: req.body.description,
+        status: req.body.status,
         priority: req.body.priority
     });
 

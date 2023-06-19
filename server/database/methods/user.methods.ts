@@ -80,7 +80,7 @@ export async function createUser(
         email: req.body.email,
         password: hashSync(req.body.password, genSaltSync()),
     });
-
+    
     const validationError = newUser.validateSync();
     if (validationError) {
         res.status(400).json(validationError);
@@ -90,7 +90,6 @@ export async function createUser(
     try {
         await newUser.save();
         const token = tokenGenerator(req.body.username);
-        // res.status(201).json(newUser);
         res.status(201).json({ 'token': token });
     } catch (error) {
         res.status(500).json({ message: error });
@@ -102,30 +101,15 @@ export async function loginUser(
     res: express.Response
 ): Promise<void> {
     try{
-        // console.log("Before Find One"); 
         const searchedUser = await UserModel.findOne({ username: req.body.loginUsername })
-
-        // if(searchedUser){
-        //     console.log("Found");
-        // }
 
         if(!searchedUser || !await compare(req.body.loginPassword, searchedUser.password)){
             res.status(401).json({ message: 'Invalid Username Or Password'});
             return;
         }
 
-        // console.log("After Find One");
-        // if(!searchedUser){
-        //     res.status(400).json({ message: 'Invalid Username Or Password'});
-        //     return;
-        // }
-        // console.log("Before Status 200");
-
-        // authorize send token here
         const token = tokenGenerator(searchedUser.username);
         res.status(200).json({ 'token': token });
-        // res.status(200).json({ message: `Welcome back ${searchedUser.username}!`});
-        // console.log("After Status 200");
     }
     catch(error){
         res.status(500).json({ message: error });
@@ -165,6 +149,7 @@ export async function deleteUser(
             res.status(400).json({ 'message': 'No User With Such Username' });
             return;
         }
+
         res.status(200).json(deletedUser);
     }
     catch (error) {
