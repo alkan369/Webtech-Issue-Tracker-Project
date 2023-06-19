@@ -144,7 +144,7 @@ const App = () => {
     const sortBy = event.target.value;
     const sortedIssues = [...issues];
 
-    if (sortBy === 'project') {
+    if (sortBy === 'name') {
       sortedIssues.sort((a, b) => a.projectName.localeCompare(b.projectName));
     } else if (sortBy === 'assignee') {
       sortedIssues.sort((a, b) => a.assignee.localeCompare(b.assignee));
@@ -153,13 +153,12 @@ const App = () => {
         const priorityOrder = { Low: 1, Medium: 2, High: 3 };
         return priorityOrder[a.priority] - priorityOrder[b.priority];
       });
-    } else if (sortBy === 'status-Open-to-Closed') {
+    } else if (sortBy === 'status-Open-to-Resolved') {
       sortedIssues.sort((a, b) => {
         const statusOrder = { Open: 1, 'In progress': 2, Resolved: 3 };
         return statusOrder[a.status] - statusOrder[b.status];
       });
     }
-
     setIssues(sortedIssues);
   };
 
@@ -236,9 +235,14 @@ const App = () => {
       <h2 className="issue-title">{issue.title}</h2>
       <p>{issue.project}</p>
       <p className="issue-assignee">
-        <strong>Assignee:</strong> {issue.assignee}
+        <strong>Assignee:</strong> {issue.assignedTo}
       </p>
+      <p className="issue-assignee">
       <p>{issue.description}</p>
+      </p>
+      <p className="issue-project">
+        <strong>Project:</strong> {issue.projectName}
+      </p>
       <p className="issue-priority">
         <strong>Priority:</strong> {issue.priority}
       </p>
