@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose';
 
 export const validProjectStatus = ['In progress', 'Done'];
+export const validProjectPriorities = ['Low', 'Medium', "High"];
 
 export const ProjectSchema = new Schema({
     id: Schema.Types.ObjectId,
@@ -25,5 +26,10 @@ export const ProjectSchema = new Schema({
         type: Schema.Types.String,
         default: 'In progress',
         enum: ['In progress', 'Done'],
+    },
+    priority: {
+        type: Schema.Types.String,
+        required: true,
+        enum: ['Low', 'Medium', 'High'],
     }
 })

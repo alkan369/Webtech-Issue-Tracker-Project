@@ -7,13 +7,13 @@ const App = () => {
   const [issues, setIssues] = useState([]);
 
   const fetchTickets = async () => {
-    fetch('http://localhost:3001/tickets')
+    fetch('http://localhost:3000/api/tickets')
       .then(response => response.json())
       .then(data => setIssues(data));
   }
 
   const createTicket = async (ticket) => {
-    fetch('http://localhost:3001/tickets/create', {
+    fetch('http://localhost:3000/api/tickets/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const App = () => {
   }
 
   // const editTicket = async (ticket) => {
-  //   fetch(`http://localhost:3001/tickets/edit/${ticket.title}`, {
+  //   fetch(`http://localhost:3000/api/tickets/edit/${ticket.title}`, {
   //     method: 'PUT',
   //     headers: {
   //       'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const App = () => {
   // }
 
   const deleteTicket = async (title) => {
-    fetch(`http://localhost:3001/tickets/delete/${title}`, {
+    fetch(`http://localhost:3000/api/tickets/delete/${title}`, {
       method: 'DELETE',
     })
       .then(response => response.json())
@@ -143,14 +143,14 @@ const App = () => {
       sortedIssues.sort((a, b) => a.projectName.localeCompare(b.projectName));
     } else if (sortBy === 'assignee') {
       sortedIssues.sort((a, b) => a.assignee.localeCompare(b.assignee));
-    } else if (sortBy === 'priority-low-to-high') {
+    } else if (sortBy === 'priority-Low-to-High') {
       sortedIssues.sort((a, b) => {
-        const priorityOrder = { low: 1, medium: 2, high: 3 };
+        const priorityOrder = { Low: 1, Medium: 2, High: 3 };
         return priorityOrder[a.priority] - priorityOrder[b.priority];
       });
-    } else if (sortBy === 'status-open-to-closed') {
+    } else if (sortBy === 'status-Open-to-Closed') {
       sortedIssues.sort((a, b) => {
-        const statusOrder = { open: 1, 'in-progress': 2, closed: 3 };
+        const statusOrder = { Open: 1, 'In progress': 2, Resolved: 3 };
         return statusOrder[a.status] - statusOrder[b.status];
       });
     }
@@ -176,15 +176,15 @@ const App = () => {
       <input className = 'ticket-input' type="text" id="assign-select" name="assign-select" />
       <label className = 'ticket-label' htmlFor="priority-select">Priority:</label>
       <select className = 'ticket-select' id="priority-select" name="priority-select">
-        <option value="high">High</option>
-        <option value="medium" selected>Medium</option>
-        <option value="low">Low</option>
+        <option value="High">High</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Low">Low</option>
       </select>
       <label className = 'ticket-label' htmlFor="status-select">Status:</label>
       <select className = 'ticket-select' id="status-select" name="status-select">
-        <option value="open">Open</option>
-        <option value="closed">Closed</option>
-        <option value="in-progress">In Progress</option>
+        <option value="Open">Open</option>
+        <option value="Resolved">Resolved</option>
+        <option value="In progress">In Progress</option>
       </select>
       <div>
         <button className = 'edit-button' type="submit">Create</button>
@@ -265,8 +265,8 @@ const App = () => {
         <option value="">Sort by:</option>
         <option value="name">Project</option>
         <option value="assignee">Assignee</option>
-        <option value="priority-low-to-high">Priority (Low to High)</option>
-        <option value="status-open-to-closed">Status (Open to Closed)</option>
+        <option value="priority-Low-to-High">Priority (Low to High)</option>
+        <option value="status-Open-to-Resolved">Status (Open to Resolved)</option>
       </select>
     </div>
   );

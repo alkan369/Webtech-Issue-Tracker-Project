@@ -171,6 +171,10 @@ ticketsController.post('/create', async (req, res) => { // works
         }
     }
 
+    if(req.body.status && validTicketStatus.indexOf(req.body.status) === -1){
+        return res.status(400).json({ message: 'Invalid Entered Ticket Status' });
+    }
+
     if(!req.body.priority){
         return res.status(400).json({ message: 'Ticket Priority Has Not Been Entered' });
     }

@@ -8,7 +8,7 @@ const App = () => {
 
   /// Fetch projects from backend
   const fetchProjects = async () => {
-    fetch('http://localhost:3001/projects')
+    fetch('http://localhost:3000/api/projects')
       .then(response => response.json())
       .then(data => setIssues(data));
   }
@@ -16,7 +16,7 @@ const App = () => {
   /// Create project via API call to backend
   /// then fetch projects from backend to update state
   const createProject = async (ticket) => {
-    fetch('http://localhost:3001/projects/create', {
+    fetch('http://localhost:3000/api/projects/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ const App = () => {
         fetchProjects();
       })
       .catch((error) => {
+        alert(error);
         console.error('Error:', error);
       });
   }
@@ -36,7 +37,7 @@ const App = () => {
   /// Edit project via API call to backend
   /// then fetch projects from backend to update state
   // const editProject = async (project) => {
-  //   fetch(`http://localhost:3001/projects/edit/${project.title}`, {
+  //   fetch(`http://localhost:3000/api/projects/edit/${project.title}`, {
   //     method: 'PUT',
   //     headers: {
   //       'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const App = () => {
   /// Delete project via API call to backend
   /// then fetch projects from backend to update state
   const deleteProject = async (title) => {
-    fetch(`http://localhost:3001/projects/delete/${title}`, {
+    fetch(`http://localhost:3000/api/projects/delete/${title}`, {
       method: 'DELETE',
     })
       .then(response => response.json())
@@ -73,16 +74,16 @@ const App = () => {
   /// TODO: Add validation
   const handleSubmit = (event) => {
     event.preventDefault();
-    const projectTitle = document.getElementById('title-input').value;
+    const projectName = document.getElementById('title-input').value;
     const projectDescription = document.getElementById('description-input').value;
     const projectPriority = document.getElementById('project-priority-select').value;
     const projectStatus = document.getElementById('project-status-select').value;
   
     const newIssue = {
-      projectTitle: projectTitle,
+      projectName: projectName,
       description: projectDescription,
-      projectPriority,
-      projectStatus,
+      priority: projectPriority,
+      status: projectStatus,
     };
 
     createProject(newIssue);
@@ -96,7 +97,7 @@ const App = () => {
   //   const updatedIssues = [...issues];
   //   const project = updatedIssues[index];
   //   toggleForm(true);
-  //   document.getElementById('project-title-input').value = project.projectTitle;
+  //   document.getElementById('project-title-input').value = project.projectName;
   //   document.getElementById('project-description-input').value = project.description;
   //   document.getElementById('project-priority-select').value = project.projectPriority;
   //   document.getElementById('project-status-select').value = project.projectStatus;
@@ -104,13 +105,13 @@ const App = () => {
 
   // const handleEditSubmit = (event) => { 
   //   event.preventDefault();
-  //   const projectTitle = document.getElementById('title-input').value;
+  //   const projectName = document.getElementById('title-input').value;
   //   const projectDescription = document.getElementById('description-input').value;
   //   const projectPriority = document.getElementById('priority-select').value;
   //   const projectStatus = document.getElementById('status-select').value;
 
   //   const updatedIssue = {
-  //     projectTitle: projectTitle,
+  //     projectName: projectName,
   //     description: projectDescription,
   //     projectPriority,
   //     projectStatus,
@@ -150,14 +151,14 @@ const App = () => {
       sortedIssues.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === 'assignee') {
       sortedIssues.sort((a, b) => a.assignee.localeCompare(b.assignee));
-    } else if (sortBy === 'priority-low-to-high') {
+    } else if (sortBy === 'priority-Low-to-High') {
       sortedIssues.sort((a, b) => {
-        const priorityOrder = { low: 1, medium: 2, high: 3 };
+        const priorityOrder = { Low: 1, Medium: 2, High: 3 };
         return priorityOrder[a.priority] - priorityOrder[b.priority];
       });
-    } else if (sortBy === 'status-open-to-closed') {
+    } else if (sortBy === 'status-In Progress-to-Done') {
       sortedIssues.sort((a, b) => {
-        const statusOrder = { open: 1, 'in-progress': 2, closed: 3 };
+        const statusOrder = { 'In progress': 1, Done: 2 };
         return statusOrder[a.status] - statusOrder[b.status];
       });
     }
@@ -181,15 +182,14 @@ const App = () => {
       <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
       <label className = 'ticket-label' htmlFor="project-input">Priority:</label>
       <select className = 'ticket-select' class="ticket-select" id="project-priority-select" name="project-priority-select">
-        <option value="high">High</option>
-        <option value="medium" selected>Medium</option>
-        <option value="low">Low</option>
+        <option value="High">High</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Low">Low</option>
       </select>
       <label className = 'ticket-label' htmlFor="project-status-select">Status:</label>
       <select className = 'ticket-select' id="project-status-select" name="project-status-select">
-        <option value="open">Open</option>
-        <option value="closed">Closed</option>
-        <option value="in-progress">In Progress</option>
+        <option value="In progress">In Progress</option>
+        <option value="Done">Done</option>
       </select>
       <div>
         <button className = 'edit-button' type="submit">Create</button>
@@ -264,8 +264,8 @@ const App = () => {
         <option value="">Sort by:</option>
         <option value="name">Title</option>
         <option value="assignee">Assignee</option>
-        <option value="priority-low-to-high">Priority (Low to High)</option>
-        <option value="status-open-to-closed">Status (Open to Closed)</option>
+        <option value="priority-Low-to-High">Priority (Low to High)</option>
+        <option value="status-In Progress-to-Done">Status (In Progress to Done)</option>
       </select>
     </div>
   );

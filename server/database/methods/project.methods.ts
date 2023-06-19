@@ -48,7 +48,8 @@ export async function createProject(
     const newProject = new ProjectModel({
         id: new mongoose.Types.ObjectId,
         projectName: req.body.projectName,
-        description: req.body.description
+        description: req.body.description,
+        priority: req.body.priority
     });
 
     const validationError = newProject.validateSync();
@@ -75,7 +76,8 @@ export async function updateProject(
             { $set: 
                 { 
                 projectName: req.body.projectName, updateDate: new Date(),
-                description: req.body.description, status: req.body.status
+                description: req.body.description, status: req.body.status,
+                priority: req.body.priority
                 }
             });
         res.status(200).json(updateProject);

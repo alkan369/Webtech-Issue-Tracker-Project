@@ -4,7 +4,7 @@ import { getAllProjects, getProjectByName, getProjectByStatus,
 createProject, 
 updateProject,
 deleteProject} from "../../database/methods/project.methods";
-import { validProjectStatus } from "../../database/schemas/project.schema";
+import { validProjectPriorities, validProjectStatus } from "../../database/schemas/project.schema";
 import { TicketModel } from "../../database/models/ticket.model";
 
 const projectsController = Router();
@@ -98,6 +98,15 @@ projectsController.post('/create', async (req, res) => {
             return res.status(400).json({ message: 'There Is A Project With Such Name' });
         }
     }
+
+    if(!req.body.priority){
+        return res.status(400).json({ message: 'Project Priority Has Not Been Entered' });
+    }
+    
+    if(validProjectPriorities.indexOf(req.body.priority) === -1){
+        return res.status(400).json({ message: 'Project Ticket Priority Input' });
+    }
+
 
     // const newProject = new ProjectModel({
     //     id: new mongoose.Types.ObjectId,
@@ -198,6 +207,11 @@ projectsController.put('/edit/:projectName', async (req, res) => {
             }
         }
     }
+
+    if (req.body.priority && validProjectPriorities.indexOf(req.body.priority) === -1) {
+        return res.status(400).json({ message: 'Invalid Project Priority' });
+    }
+
 
     // check if enums for status and priority are validated
     // try {
