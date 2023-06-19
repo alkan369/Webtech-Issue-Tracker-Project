@@ -259,7 +259,7 @@ const App = () => {
       </header>
       <main className="ticket-main">
         {createIssueButton}
-        <select className="ticket-select" onChange={sortFunction}>
+        <select className="ticket-select" onChange={(e) => sortFunction(e)}>
           <option value="">Sort by:</option>
           <option value="name">Project</option>
           <option value="assignee">Assignee</option>

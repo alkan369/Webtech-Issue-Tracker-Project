@@ -231,6 +231,9 @@ const App = () => {
   const issueListItems = issues.map((issue, index) => (
     <div className={'ticket-form'}>
       <h2 className="project-title">{issue.projectName}</h2>
+      <p className="project-description">
+      <strong>Description:</strong> {issue.description}
+      </p>
       <p className="project-priority">
         <strong>Priority:</strong> {issue.priority}
       </p>
@@ -253,10 +256,9 @@ const App = () => {
       </header>
       <main className="ticket-main">
         {createIssueButton}
-        <select className="ticket-select" onChange={sortFunction}>
+        <select className="ticket-select" onChange={(e) => sortFunction(e)}>
           <option value="">Sort by:</option>
           <option value="name">Title</option>
-          <option value="assignee">Assignee</option>
           <option value="priority-Low-to-High">Priority (Low to High)</option>
           <option value="status-In Progress-to-Done">Status (In Progress to Done)</option>
         </select>

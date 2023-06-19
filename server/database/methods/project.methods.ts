@@ -49,8 +49,8 @@ export async function createProject(
         id: new mongoose.Types.ObjectId,
         projectName: req.body.projectName,
         description: req.body.description,
-        status: req.body.status,
-        priority: req.body.priority
+        priority: req.body.priority,
+        status: req.body.status
     });
 
     const validationError = newProject.validateSync();
