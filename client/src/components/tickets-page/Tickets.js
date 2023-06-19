@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../dashboard/Dashboard.css'
+import './Tickets.css';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -159,36 +159,36 @@ const App = () => {
   };
 
   const createIssueButton = (
-    <button id="create-issue-button" onClick={toggleForm}>
+    <button className = 'edit-button' id="create-issue-button" onClick={toggleForm}>
       Create Ticket
     </button>
   );
 
   const newIssueForm = showForm && (
-    <form id="new-issue-form" onSubmit={handleSubmit}>
-      <label htmlFor="title-input">Title:</label>
-      <input type="text" id="title-input" name="title-input" required />
-      <label htmlFor="description-input">Description:</label>
-      <textarea id="description-input" name="description-input" required />
-      <label htmlFor="project-input">Project:</label>
-      <textarea id="project-input" name="project-input" required />
-      <label htmlFor="assign-select">Assign:</label>
-      <input type="text" id="assign-select" name="assign-select" required />
-      <label htmlFor="priority-select">Priority:</label>
-      <select id="priority-select" name="priority-select">
+    <form className = 'ticket-form' id="new-issue-form" onSubmit={handleSubmit}>
+      <label className = 'ticket-input' htmlFor="title-input">Title:</label>
+      <input className = 'ticket-label' type="text" id="title-input" name="title-input" required />
+      <label className = 'ticket-label' htmlFor="description-input">Description:</label>
+      <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
+      <label className = 'ticket-label' htmlFor="project-input">Project:</label>
+      <textarea className = 'ticket-textarea' id="project-input" name="project-input" required />
+      <label className = 'ticket-label' htmlFor="assign-select">Assign:</label>
+      <input className = 'ticket-input' type="text" id="assign-select" name="assign-select" required />
+      <label className = 'ticket-label' htmlFor="priority-select">Priority:</label>
+      <select className = 'ticket-select' id="priority-select" name="priority-select">
         <option value="high">High</option>
         <option value="medium">Medium</option>
         <option value="low">Low</option>
       </select>
-      <label htmlFor="status-select">Status:</label>
-      <select id="status-select" name="status-select">
+      <label className = 'ticket-label' htmlFor="status-select">Status:</label>
+      <select className = 'ticket-select' id="status-select" name="status-select">
         <option value="open">Open</option>
         <option value="closed">Closed</option>
         <option value="in-progress">In Progress</option>
       </select>
       <div>
-        <button type="submit">Create</button>
-        <button type="button" id="cancel-button" onClick={toggleForm}>
+        <button className = 'edit-button' type="submit">Create</button>
+        <button className = 'delete-button' type="button" id="cancel-button" onClick={toggleForm}>
           Cancel
         </button>
       </div>
@@ -196,30 +196,30 @@ const App = () => {
   );
 
   const editIssueForm = showEditForm && (
-    <form id="new-issue-form" onSubmit={handleEditSubmit}>
-      <label htmlFor="title-input">Title:</label>
-      <input type="text" id="title-input" name="title-input" required />
-      <label htmlFor="description-input">Description:</label>
-      <textarea id="description-input" name="description-input" required />
-      <label htmlFor="project-input">Project:</label>
-      <textarea id="project-input" name="project-input" required />
-      <label htmlFor="assign-select">Assign:</label>
-      <input type="text" id="assign-select" name="assign-select" required />
-      <label htmlFor="priority-select">Priority:</label>
-      <select id="priority-select" name="priority-select">
+    <form className = 'ticket-form' id="new-issue-form" onSubmit={handleEditSubmit}>
+      <label className = 'ticket-label' htmlFor="title-input">Title:</label>
+      <input className = 'ticket-input' type="text" id="title-input" name="title-input" required />
+      <label className = 'ticket-label' htmlFor="description-input">Description:</label>
+      <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
+      <label className = 'ticket-label' htmlFor="project-input">Project:</label>
+      <textarea className = 'ticket-textarea' id="project-input" name="project-input" required />
+      <label className = 'ticket-label' htmlFor="assign-select">Assign:</label>
+      <input className = 'ticket-input' type="text" id="assign-select" name="assign-select" required />
+      <label className = 'ticket-label' htmlFor="priority-select">Priority:</label>
+      <select className = 'ticket-select' id="priority-select" name="priority-select">
         <option value="high">High</option>
         <option value="medium">Medium</option>
         <option value="low">Low</option>
       </select>
-      <label htmlFor="status-select">Status:</label>
-      <select id="status-select" name="status-select">
+      <label className = 'ticket-label' htmlFor="status-select">Status:</label>
+      <select className = 'ticket-select' id="status-select" name="status-select">
         <option value="open">Open</option>
         <option value="closed">Closed</option>
         <option value="in-progress">In Progress</option>
       </select>
       <div>
-        <button type="submit">Edit</button>
-        <button type="button" id="cancel-button" onClick={toggleForm(true)}>
+        <button className = 'edit-button' type="submit">Edit</button>
+        <button className = 'delete-button' type="button" id="cancel-button" onClick={toggleForm(true)}>
           Cancel
         </button>
       </div>
@@ -227,7 +227,7 @@ const App = () => {
   );
 
   const issueListItems = issues.map((issue, index) => (
-    <div className={`issue ${issue.priority}`} key={index}>
+    <form className={'ticket-form'}>
       <h2 className="issue-title">{issue.title}</h2>
       <p>{issue.project}</p>
       <p className="issue-assignee">
@@ -244,24 +244,24 @@ const App = () => {
       <button className="delete-button" onClick={() => handleDelete(index)}>
         Delete
       </button>
-    </div>
+    </form>
   ));
 
   return (
     <div>
-      <header>
+      <header className="ticket-header">
         {/* <img src={logo} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
-        <h1 style={{ marginLeft: '60px' }}>Issue Tracker</h1>
+        <h1 style={{ marginLeft: '60px' }}>Tickets</h1>
       </header>
-      <main>
+      <main className="ticket-main">
         {createIssueButton}
         {newIssueForm}
         {editIssueForm}
-        <div id="issue-list">
+        <div className="ticket-list" id="issue-list">
           {issueListItems}
         </div>
       </main>
-      <select onChange={sortFunction}>
+      <select className="ticket-select" onChange={sortFunction}>
         <option value="">Sort by:</option>
         <option value="name">Project</option>
         <option value="assignee">Assignee</option>

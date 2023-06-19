@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../dashboard/Dashboard.css';
+import './Projects.css';;
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -164,35 +164,35 @@ const App = () => {
     setIssues(sortedIssues);
   };
 
-  /// Self explanatory
+  /// Create Project button
   const createIssueButton = (
-    <button id="create-issue-button" onClick={toggleForm}>
-      Create Ticket
+    <button className = 'edit-button' id="create-issue-button" onClick={toggleForm}>
+      Create Project
     </button>
   );
 
   /// Form for creating a new project
   const newIssueForm = showForm && (
-    <form id="new-issue-form" onSubmit={handleSubmit}>
-      <label htmlFor="project-title-input">Project title:</label>
-      <input type="text" id="title-input" name="title-input" required />
-      <label htmlFor="project-description-input">Project Description:</label>
-      <textarea id="description-input" name="description-input" required />
-      <label htmlFor="project-input">Priority:</label>
-      <select class="ticket-select" id="project-priority-select" name="project-priority-select">
+    <form className = 'ticket-form' id="new-issue-form" onSubmit={handleSubmit}>
+      <label className = 'ticket-label' htmlFor="project-title-input">Project title:</label>
+      <input className = 'ticket-input' type="text" id="title-input" name="title-input" required />
+      <label className = 'ticket-label' htmlFor="project-description-input">Project Description:</label>
+      <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
+      <label className = 'ticket-label' htmlFor="project-input">Priority:</label>
+      <select className = 'ticket-select' class="ticket-select" id="project-priority-select" name="project-priority-select">
         <option value="high">High</option>
         <option value="medium" selected>Medium</option>
         <option value="low">Low</option>
       </select>
-      <label htmlFor="project-status-select">Status:</label>
-      <select id="project-status-select" name="project-status-select">
+      <label className = 'ticket-label' htmlFor="project-status-select">Status:</label>
+      <select className = 'ticket-select' id="project-status-select" name="project-status-select">
         <option value="open">Open</option>
         <option value="closed">Closed</option>
         <option value="in-progress">In Progress</option>
       </select>
       <div>
-        <button type="submit">Create</button>
-        <button type="button" id="cancel-button" onClick={toggleForm}>
+        <button className = 'edit-button' type="submit">Create</button>
+        <button className = 'delete-button'type="button" id="cancel-button" onClick={toggleForm}>
           Cancel
         </button>
       </div>
@@ -201,26 +201,26 @@ const App = () => {
 
   /// Form for editing an existing project (same as new project form but with different submit handler)
   const editIssueForm = showEditForm && (
-    <form id="new-issue-form" onSubmit={handleEditSubmit}>
-    <label htmlFor="project-title-input">Project title:</label>
-    <input type="text" id="title-input" name="title-input" required />
-    <label htmlFor="project-description-input">Project Description:</label>
-    <textarea id="description-input" name="description-input" required />
-    <label htmlFor="project-input">Priority:</label>
-    <select class="ticket-select" id="project-priority-select" name="project-priority-select">
+    <form className = 'ticket-form' id="new-issue-form" onSubmit={handleEditSubmit}>
+    <label className = 'ticket-label' htmlFor="project-title-input">Project title:</label>
+    <input className = 'ticket-input' type="text" id="title-input" name="title-input" required />
+    <label className = 'ticket-label' htmlFor="project-description-input">Project Description:</label>
+    <textarea className = 'ticket-textarea' id="description-input" name="description-input" required />
+    <label className = 'ticket-label' htmlFor="project-input">Priority:</label>
+    <select className = 'ticket-select' class="ticket-select" id="project-priority-select" name="project-priority-select">
       <option value="high">High</option>
       <option value="medium" selected>Medium</option>
       <option value="low">Low</option>
     </select>
-    <label htmlFor="project-status-select">Status:</label>
-    <select id="project-status-select" name="project-status-select">
+    <label className = 'ticket-label' htmlFor="project-status-select">Status:</label>
+    <select className = 'ticket-select' id="project-status-select" name="project-status-select">
       <option value="open">Open</option>
       <option value="closed">Closed</option>
       <option value="in-progress">In Progress</option>
     </select>
     <div>
-      <button type="submit">Edit</button>
-      <button type="button" id="cancel-button" onClick={toggleForm}>
+      <button className = 'edit-button' type="submit">Edit</button>
+      <button className = 'delete-button' type="button" id="cancel-button" onClick={toggleForm}>
         Cancel
       </button>
     </div>
@@ -229,7 +229,7 @@ const App = () => {
 
   /// Map projects to JSX
   const issueListItems = issues.map((issue, index) => (
-    <div className={`project ${issue.priority}`} key={index}>
+    <form className={'ticket-form'}>
       <h2 className="project-title">{issue.projectTitle}</h2>
       <p className="project-priority">
         <strong>Priority:</strong> {issue.projectPriority}
@@ -241,25 +241,25 @@ const App = () => {
       <button className="delete-button" onClick={() => handleDelete(index)}>
         Delete
       </button>
-    </div>
+    </form>
   ));
 
   /// Render
   return (
     <div>
-      <header>
+      <header className="ticket-header">
         {/* <img src={logo} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
-        <h1 style={{ marginLeft: '60px' }}>Issue Tracker</h1>
+        <h1 style={{ marginLeft: '60px' }}>Projects</h1>
       </header>
-      <main>
+      <main className="ticket-main">
         {createIssueButton}
         {newIssueForm}
         {editIssueForm}
-        <div id="issue-list">
+        <div id="issue-list" className="ticket-project">
           {issueListItems}
         </div>
       </main>
-      <select onChange={sortFunction}>
+      <select className="ticket-select" onChange={sortFunction}>
         <option value="">Sort by:</option>
         <option value="name">Title</option>
         <option value="assignee">Assignee</option>

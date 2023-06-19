@@ -6,8 +6,8 @@ import './Dashboard.css';
 const App = () => {
   return (
     <div>
-      <header>
-        {/* <img src={logo} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
+      <header className="ticket-header">
+        {/* <img src={D:logo.png} alt="Logo" style={{ float: 'left', height: '80px', width: '90px', backgroundColor: '#fcfcfc' }} /> */}
         <h1 style={{ marginLeft: '60px' }}>Issue Tracker</h1>
       </header>
       <main>
