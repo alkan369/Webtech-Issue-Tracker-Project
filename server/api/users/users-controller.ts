@@ -28,7 +28,6 @@ usersController.get('/view_by_email/:email', async (req, res) =>{
     await getUserByEmail(req, res);
 });
 
-
 usersController.post('/create', async (req, res) => {
     
     if(!req.body.firstName || req.body.firstName === "" ){

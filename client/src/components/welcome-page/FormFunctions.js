@@ -52,6 +52,7 @@ export function handleRegistration(navigate, registrationData) {
     .post('/api/users/create', registrationData)
     .then((response) => {
       alert('Welcome to IssueTracker!');
+      
       const token = response.data.token;
       // localStorage.setItem(token);
       navigate('/dashboard');

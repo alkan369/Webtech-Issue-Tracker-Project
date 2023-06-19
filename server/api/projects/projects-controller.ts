@@ -28,7 +28,6 @@ projectsController.get('/view_by_status/:status', async (req, res) =>{
     await getProjectByStatus(req, res);
 })
 
-
 projectsController.post('/create', async (req, res) => {
     if (req.body.projectName) {
         const project = await ProjectModel.findOne({ projectName: req.body.projectName });
