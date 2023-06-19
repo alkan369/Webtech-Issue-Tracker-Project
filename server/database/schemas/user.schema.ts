@@ -13,17 +13,17 @@ export const UserSchema = new Schema({
     email: {
         type: Schema.Types.String,
         required: true,
-        // match: [/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, 'Invalid email'],
+        match: [/([a-z0-9]+\.)*[a-z0-9]+@([a-z0-9]+\.)+[a-z0-9]+/, 'Invalid email'],
         unique: true,
     },
     password: {
         type: Schema.Types.String,
         required: true,
-        match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/, 'Weak password'],
     },
     username: {
         type: Schema.Types.String,
         required: true,
+        match: [/[A-Za-z0-9]{6,}$/, 'Invalid username'],
         unique: true,
     },
     createDate: {
