@@ -16,7 +16,38 @@ To be updated
 
 ## Frontend(Login/Register)
 
-To be updated
+The login/register functionality is implemented using React. It is separated into two files:  
+**Welcome.js:**  
+The file creates a registration form that has an animated login form which slides up/down
+when the labels Login/Register are clicked. All the fields in the forms are required.
+The data is validated before it is sent to the server to check the data in the database.
+
+**FormFunctions.js:**  
+This file contains various form handling functions used in the welcome page.
+- useFormState()  
+  Custom hook for managing form state.  
+  Returns an object containing form state values and setter functions.
+- handleRegistration(navigate, registrationData)  
+  Handles the user registration process.  
+  Parameters:  
+    - navigate (function): The navigation function to redirect the user.  
+    - registrationData (object): The user registration data.
+- handleLogin(navigate, loginData)  
+  Handles the user login process.  
+  Parameters:  
+    - navigate (function): The navigation function to redirect the user.  
+    - loginData (object): The user login data.
+- handleTogglePasswordVisibility(inputId, setEyeClass)  
+  Toggles the visibility of a password field.  
+  Parameters:  
+    - inputId (string): The ID of the password field.  
+    - setEyeClass (function): The state setter function for the eye icon class.
+- handleLoginVisibility(setLoginVisibility, isLoginVisible)  
+  Toggles the visibility of the login form.
+  Parameters
+    - setLoginVisibility (function): The state setter function for login form visibility.
+    - isLoginVisible (boolean): The current login form visibility state.
+
 
 ---
 
