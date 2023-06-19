@@ -52,6 +52,8 @@ export function handleRegistration(navigate, registrationData) {
     .post('/api/users/create', registrationData)
     .then((response) => {
       alert('Welcome to IssueTracker!');
+      const token = response.data.token;
+      // localStorage.setItem(token);
       navigate('/dashboard');
     })
     .catch((error) => {
@@ -63,7 +65,10 @@ export function handleLogin(navigate, loginData) {
   axios
     .post('/api/users/login', loginData)
     .then((response) => {
-      alert(response.data.message);
+      alert(`Welcome back ${loginData.loginUsername}!`);
+
+      const token = response.data.token;
+      // localStorage.setItem(token);
       navigate('/dashboard');
     })
     .catch((error) => {

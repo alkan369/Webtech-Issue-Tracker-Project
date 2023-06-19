@@ -10,7 +10,7 @@ const App = () => {
         {/* Route for Welcome Page - This is the default route */}
         <Route path="/" element={<Welcome />} />
         {/* Route for Tickets Page */}
-        <Route path="/tickets" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
