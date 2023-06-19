@@ -2,7 +2,6 @@ import express from "express";
 import { UserModel } from "../models/user.model";
 import mongoose from "mongoose";
 import { genSaltSync, hashSync, compare } from "bcrypt";
-import { tokenGenerator } from "../../utils/token-generator";
 
 export async function getAllUsers(
     req: express.Request,
@@ -89,8 +88,12 @@ export async function createUser(
 
     try {
         await newUser.save();
+<<<<<<< HEAD
         const token = tokenGenerator(req.body.username);
         res.status(201).json({ 'token': token });
+=======
+        res.status(201).json(newUser);
+>>>>>>> 29caadf9fb62987cd6891a6dc72b3386930528fe
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -104,12 +107,23 @@ export async function loginUser(
         const searchedUser = await UserModel.findOne({ username: req.body.loginUsername })
 
         if(!searchedUser || !await compare(req.body.loginPassword, searchedUser.password)){
-            res.status(401).json({ message: 'Invalid Username Or Password'});
+            res.status(400).json({ message: 'Invalid Username Or Password'});
             return;
         }
 
+<<<<<<< HEAD
         const token = tokenGenerator(searchedUser.username);
         res.status(200).json({ 'token': token });
+=======
+        // console.log("After Find One");
+        // if(!searchedUser){
+        //     res.status(400).json({ message: 'Invalid Username Or Password'});
+        //     return;
+        // }
+        // console.log("Before Status 200");
+        res.status(200).json({ message: `Welcome back ${searchedUser.username}!`});
+        // console.log("After Status 200");
+>>>>>>> 29caadf9fb62987cd6891a6dc72b3386930528fe
     }
     catch(error){
         res.status(500).json({ message: error });
