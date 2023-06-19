@@ -21,9 +21,11 @@ const App = () => {
       },
       body: JSON.stringify(ticket),
     })
-      .then(response => response.json())
-      .then(data => {
-        // console.log('Success:', data);
+      .then(response => response.json().then(data => ({code: response.status, data})))
+      .then(result => {
+        if(result.code == 400){
+          alert(result.data.message);
+        }
         fetchTickets();
       })
       .catch((error) => {

@@ -52,7 +52,7 @@ export function handleRegistration(navigate, registrationData) {
     .post('/api/users/create', registrationData)
     .then((response) => {
       alert('Welcome to IssueTracker!');
-      navigate('/tickets');
+      navigate('/dashboard');
     })
     .catch((error) => {
       alert(error.response.data.message);
@@ -64,7 +64,7 @@ export function handleLogin(navigate, loginData) {
     .post('/api/users/login', loginData)
     .then((response) => {
       alert(response.data.message);
-      navigate('/tickets');
+      navigate('/dashboard');
     })
     .catch((error) => {
       alert(error.response.data.message);
