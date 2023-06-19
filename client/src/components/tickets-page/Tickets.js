@@ -238,7 +238,7 @@ const App = () => {
         <strong>Assignee:</strong> {issue.assignedTo}
       </p>
       <p className="issue-assignee">
-      <p>{issue.description}</p>
+        <strong>Description:</strong> {issue.description}
       </p>
       <p className="issue-project">
         <strong>Project:</strong> {issue.projectName}
