@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import './Projects.css';;
+import './Projects.css';
+let firstTime = true;
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
   // const [showEditForm, setShowEditForm] = useState(false);
+
   const [issues, setIssues] = useState([]);
 
-  /// Fetch projects from backend
-  const fetchProjects = async () => {
-    fetch('http://localhost:3000/api/projects')
-      .then(response => response.json())
-      .then(data => setIssues(data));
-  }
+
+    /// Fetch projects from backend
+    const fetchProjects = async () => {
+      fetch('http://localhost:3000/api/projects')
+        .then(response => response.json())
+        .then(data => setIssues(data));
+    }
+  
 
   /// Create project via API call to backend
   /// then fetch projects from backend to update state
@@ -33,7 +37,11 @@ const App = () => {
         console.error('Error:', error);
       });
   }
-  fetchProjects();
+  if(firstTime){
+    fetchProjects();
+    firstTime = false;
+  }
+
   /// Edit project via API call to backend
   /// then fetch projects from backend to update state
   // const editProject = async (project) => {
@@ -62,7 +70,7 @@ const App = () => {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log('Success:', data);
+        console.log('Success:', data);
         fetchProjects();
       })
       .catch((error) => {
@@ -132,13 +140,6 @@ const App = () => {
     // else{
       setShowForm(!showForm);
     // }
-  };
-
-  /// Handle delete project
-  const handleDelete = (index) => {
-    const updatedIssues = [...issues];
-    const title = updatedIssues[index].title;
-    deleteProject(title);
   };
 
   /// Sort projects by name, assignee, priority, or status
@@ -228,7 +229,7 @@ const App = () => {
 
   /// Map projects to JSX
   const issueListItems = issues.map((issue, index) => (
-    <form className={'ticket-form'}>
+    <div className={'ticket-form'}>
       <h2 className="project-title">{issue.projectName}</h2>
       <p className="project-priority">
         <strong>Priority:</strong> {issue.priority}
@@ -237,10 +238,10 @@ const App = () => {
         <strong>Status:</strong> {issue.status}
       </p>
       {/* <button className="edit-button" onClick={() => handleEdit(index)}> Edit </button> */}
-      <button className="delete-button" onClick={() => handleDelete(index)}>
+      <button className="delete-button" onClick={() => deleteProject(issue.projectName)}>
         Delete
       </button>
-    </form>
+    </div>
   ));
 
   /// Render

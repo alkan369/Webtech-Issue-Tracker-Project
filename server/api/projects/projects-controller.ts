@@ -230,7 +230,7 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     await updateProject(req, res);
 });
 
-projectsController.delete('/delete/:projectName', async (req, res) => {
+projectsController.delete('/delete/:title', async (req, res) => {
     // const searchedTicketId: string = req.params.id;
     // if(!searchedTicketId || searchedTicketId.length === 0){
     //     return res.status(400).json({'message': 'No Ticket Id Input'});

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Tickets.css';
+let firstTime = true;
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
@@ -29,7 +30,10 @@ const App = () => {
         console.error('Error:', error);
       });
   }
-  fetchTickets();
+  if(firstTime){
+    fetchTickets();
+    firstTime = false;
+  }
 
   // const editTicket = async (ticket) => {
   //   fetch(`http://localhost:3000/api/tickets/edit/${ticket.title}`, {
