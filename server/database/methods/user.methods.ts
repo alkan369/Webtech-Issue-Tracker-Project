@@ -104,7 +104,7 @@ export async function loginUser(
         const searchedUser = await UserModel.findOne({ username: req.body.loginUsername })
 
         if(!searchedUser || !await compare(req.body.loginPassword, searchedUser.password)){
-            res.status(400).json({ message: 'Invalid Username Or Password'});
+            res.status(401).json({ message: 'Invalid Username Or Password'});
             return;
         }
 

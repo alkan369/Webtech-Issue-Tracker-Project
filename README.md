@@ -10,7 +10,7 @@ The project consists of 4 parts:
 
 ## Architecture diagram of the whole project
 
-To be updated
+A png file is present
 
 ---
 
@@ -65,7 +65,48 @@ the Projects part. The only difference is the API calls.
 
 ## Backend(Server)
 
-To be updated
+The Server is used to connect to the database. It has different variety of endpoits for Tickets, Projects and Users.
+
+The endpoints for the tickets are:
+* GET
+  * View all existing tickets
+  * View a specific ticket by its title
+  * View all existing tickets by projectName\
+  * View all existing tickets by asignee
+  * View all existing tickets by status
+* POST
+  * Creation of a ticket
+* PUT
+  * Edit of an existing ticket
+* DELETE
+  * Deletion of an existing ticket
+* 
+
+The endpoints for the projects are:
+* GET
+  * View all existing projects
+  * View a specific project by its name
+  * View all existing projects by status
+* POST
+  * Creation of a project
+* PUT
+  * Edit of an existing project
+* DELETE
+  * Deletion of an existing project
+
+The endpoints for the users are:
+* GET
+  * View all existing users
+  * View all existing users by their username
+  * View all existing users by their first name
+  * View all existing users by their last name
+  * View all existing users by their email
+* POST
+  * Creation of a user
+* PUT
+  * Edit of a user
+* DELETE
+  * Deletion of a user
 
 ---
 
