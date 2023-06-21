@@ -80,13 +80,8 @@ const App = () => {
     fetch(`http://localhost:3000/api/projects/delete/${title}`, {
       method: "DELETE",
     })
-<<<<<<< Updated upstream
-      .then(response => response.json().then(data => ({ code: response.status, data })))
-      .then(result => {
-=======
       .then((response) => response.json().then((data) => ({ code: response.status, data })))
       .then((result) => {
->>>>>>> Stashed changes
         if (result.code == 400) {
           alert(result.data.message);
         }
