@@ -3,7 +3,8 @@ import { ProjectModel } from "../../database/models/project.model";
 import { getAllProjects, getProjectByName, getProjectByStatus,
 createProject, 
 updateProject,
-deleteProject} from "../../database/methods/project.methods";
+deleteProject,
+getById} from "../../database/methods/project.methods";
 import { validProjectPriorities, validProjectStatus } from "../../database/schemas/project.schema";
 import { TicketModel } from "../../database/models/ticket.model";
 
@@ -12,6 +13,10 @@ const projectsController = Router();
 projectsController.get('/', async (req, res) => {
 
     await getAllProjects(req, res);
+});
+
+projectsController.get('/:id', async (req, res) => {
+    await getById(req, res);
 });
 
 projectsController.get('/view_by_name/:projectName', async (req, res) => {
@@ -51,15 +56,15 @@ projectsController.post('/create', async (req, res) => {
     await createProject(req, res);
 });
 
-projectsController.put('/edit/:projectName', async (req, res) => {
-    const projectToBeUpdated = await ProjectModel.findOne({ projectName: req.params.projectName });
+projectsController.put('/edit/:id', async (req, res) => {
+    const projectToBeUpdated = await ProjectModel.findById({ _id: req.params.id });
     if (!projectToBeUpdated) {
-        return res.status(400).json({ message: 'No Project With Such Name' });
+        return res.status(400).json({ message: 'No Project' });
     }
     
     if (req.body.projectName) {
         const project = await ProjectModel.findOne({ projectName: req.body.projectName });
-        if (project) {
+        if (project && project._id != req.body._id) {
             return res.status(400).json({ message: 'There Is A Project With Such Name' });
         }
     }
@@ -69,7 +74,7 @@ projectsController.put('/edit/:projectName', async (req, res) => {
     }
 
     if(req.body.status === 'Done' && projectToBeUpdated.status !== 'Done'){
-        const currentProjectTickets = await TicketModel.find({ projectName: req.params.projectName });
+        const currentProjectTickets = await TicketModel.find({ projectName: req.body.projectName });
         for(var ticket of currentProjectTickets){
             if(ticket.status !== 'Resolved'){
                 return res.status(400).json({message: 'Project Has Incompleted Tickets'});

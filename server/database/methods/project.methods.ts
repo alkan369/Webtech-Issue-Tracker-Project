@@ -16,6 +16,18 @@ export async function getAllProjects(
     }
 }
 
+export async function getById(
+    req: express.Request,
+    res: express.Response
+): Promise<void> {
+    try {
+        const project = await ProjectModel.findById({_id: req.params.id});
+        res.status(200).json(project);
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
 export async function getProjectByName(
     req: express.Request,
     res: express.Response
@@ -74,7 +86,7 @@ export async function updateProject(
     res: express.Response
 ): Promise<void> {
     try {
-        const updateProject = await ProjectModel.findOneAndUpdate({ projectName: req.params.projectName },
+        const updateProject = await ProjectModel.findByIdAndUpdate({ _id: req.params.id },
             { $set: 
                 { 
                 projectName: req.body.projectName, updateDate: new Date(),

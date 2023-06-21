@@ -15,6 +15,15 @@ export async function getAllTickets(
     }
 }
 
+export async function getById(req: express.Request, res: express.Response): Promise<void> {
+    try {
+        const ticket = await TicketModel.findById({_id: req.params.id});
+        res.status(200).json(ticket);
+    } catch (error) {
+        res.status(500).json({message: error})
+    }
+}
+
 export async function getTicketByStatus(
     req: express.Request,
     res: express.Response
@@ -123,7 +132,7 @@ export async function updateTicket(
     res: express.Response
 ): Promise<void> {
     try {
-        const updateTicket = await TicketModel.findOneAndUpdate({ title: req.params.title },
+        const updateTicket = await TicketModel.findByIdAndUpdate({ _id: req.params.id },
             { $set: 
                 { 
                 title: req.body.title, projectName: req.body.projectName, assignedTo: req.body.assignedTo, 

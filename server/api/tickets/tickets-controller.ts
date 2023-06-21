@@ -5,13 +5,17 @@ import { ProjectModel } from "../../database/models/project.model";
 import { UserModel } from "../../database/models/user.model";
 import { getTicketByStatus, getTicketByProjectName, getTicketByTitle, 
     getTicketByAssignee, createTicket, updateTicket, deleteTicket, 
-    getAllTickets, getTicketWithNoProject, getTicketNotAsigned } from "../../database/methods/ticket.methods";
+    getAllTickets, getTicketWithNoProject, getTicketNotAsigned, getById } from "../../database/methods/ticket.methods";
 
 const ticketsController = Router();
 
 ticketsController.get('/', async (req, res) => { 
     await getAllTickets(req, res);
 });
+
+ticketsController.get('/:id', async (req, res) => {
+    await getById(req, res);
+})
 
 ticketsController.get('/view_by_title/:title', async (req, res) => {
         
@@ -89,16 +93,16 @@ ticketsController.post('/create', async (req, res) => {
     await createTicket(req, res);    
 });
 
-ticketsController.put('/edit/:title', async (req, res) => { 
+ticketsController.put('/edit/:id', async (req, res) => { 
     
-    const ticketToBeUpdated = await TicketModel.findOne({ title: req.params.title });
+    const ticketToBeUpdated = await TicketModel.findById({ _id: req.params.id });
     if (!ticketToBeUpdated) {
-        return res.status(400).json({ message: 'No Ticket With Such Title' });
+        return res.status(400).json({ message: 'No Ticket' });
     }
 
     if (req.body.title) {
         const ticket = await TicketModel.findOne({ title: req.body.title });
-        if (ticket) {
+        if (ticket && ticket._id != req.body._id) {
             return res.status(400).json({ message: 'Ticket With Such Title Already Exists' });
         }
     }
