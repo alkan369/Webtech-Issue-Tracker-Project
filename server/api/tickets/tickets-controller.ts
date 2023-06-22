@@ -10,40 +10,40 @@ import { validateToken } from "../../middleware/token-validator";
 
 const ticketsController = Router();
 
-ticketsController.get('/', async (req, res) => { 
+ticketsController.get('/', validateToken, async (req, res) => { 
     await getAllTickets(req, res);
 });
 
-ticketsController.get('/:id', async (req, res) => {
+ticketsController.get('/:id', validateToken, async (req, res) => {
     await getById(req, res);
 })
 
-ticketsController.get('/view_by_title/:title', async (req, res) => {
+ticketsController.get('/view_by_title/:title', validateToken, async (req, res) => {
         
     await getTicketByTitle(req, res);
 });
 
-ticketsController.get('/view_by_project/:projectName', async (req, res) =>{ 
+ticketsController.get('/view_by_project/:projectName', validateToken, async (req, res) =>{ 
     
     await getTicketByProjectName(req, res);
 })
 
-ticketsController.get('/view_by_project/', async (req, res) =>{
+ticketsController.get('/view_by_project/', validateToken, async (req, res) =>{
 
     await getTicketWithNoProject(req, res);
 })
 
-ticketsController.get('/view_by_asignee/:assignedTo', async (req, res) =>{ 
+ticketsController.get('/view_by_asignee/:assignedTo', validateToken, async (req, res) =>{ 
     
     await getTicketByAssignee(req, res);
 })
 
-ticketsController.get('/view_by_asignee/', async (req, res) =>{ 
+ticketsController.get('/view_by_asignee/', validateToken, async (req, res) =>{ 
     
     await getTicketNotAsigned(req, res);
 })
 
-ticketsController.get('/view_by_status/:status', async (req, res) =>{ 
+ticketsController.get('/view_by_status/:status', validateToken, async (req, res) =>{ 
 
     const ticketStatusIndex: number = validTicketStatus.indexOf(req.params.status);
     if(ticketStatusIndex === -1){
@@ -53,7 +53,7 @@ ticketsController.get('/view_by_status/:status', async (req, res) =>{
     await getTicketByStatus(req, res);
 })
 
-ticketsController.post('/create', validateToken, async (req, res) => { 
+ticketsController.post('/create', validateToken, validateToken, async (req, res) => { 
 
     if (req.body.title) {
         const ticket = await TicketModel.findOne({ title: req.body.title });
@@ -94,7 +94,7 @@ ticketsController.post('/create', validateToken, async (req, res) => {
     await createTicket(req, res);    
 });
 
-ticketsController.put('/edit/:id', async (req, res) => { 
+ticketsController.put('/edit/:id', validateToken, async (req, res) => { 
     
     const ticketToBeUpdated = await TicketModel.findById({ _id: req.params.id });
     if (!ticketToBeUpdated) {
@@ -141,7 +141,7 @@ ticketsController.put('/edit/:id', async (req, res) => {
     await updateTicket(req, res);
 });
 
-ticketsController.delete('/delete/:title', async (req, res) => { 
+ticketsController.delete('/delete/:title', validateToken, async (req, res) => { 
     
     await deleteTicket(req, res);
 });

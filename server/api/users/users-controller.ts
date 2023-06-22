@@ -1,34 +1,35 @@
 import { Router } from "express";
 import { UserModel } from "../../database/models/user.model";
 import { createUser, deleteUser, getAllUsers, getUserByEmail, getUserByFirstName, getUserByLastName, getUserByUsername, loginUser, updateUser } from "../../database/methods/user.methods";
+import { validateToken } from "../../middleware/token-validator";
 
 const usersController = Router();
 
-usersController.get('/', async (req, res) => {
+usersController.get('/', validateToken, async (req, res) => {
     await getAllUsers(req, res);
 });
 
-usersController.get('/view_by_username/:username', async (req, res) => {
+usersController.get('/view_by_username/:username', validateToken, async (req, res) => {
 
     await getUserByUsername(req, res);
 });
 
-usersController.get('/view_by_firstName/:firstName', async (req, res) =>{
+usersController.get('/view_by_firstName/:firstName', validateToken, async (req, res) =>{
 
     await getUserByFirstName(req, res);
 });
 
-usersController.get('/view_by_lastName/:lastName', async (req, res) =>{
+usersController.get('/view_by_lastName/:lastName', validateToken, async (req, res) =>{
 
     await getUserByLastName(req, res);
 });
 
-usersController.get('/view_by_email/:email', async (req, res) =>{
+usersController.get('/view_by_email/:email', validateToken, async (req, res) =>{
 
     await getUserByEmail(req, res);
 });
 
-usersController.post('/create', async (req, res) => {
+usersController.post('/create', validateToken, async (req, res) => {
     
     if(!req.body.firstName || req.body.firstName === "" ){
         return res.status(400).json({ message: 'First Name Not Entered' });
@@ -83,7 +84,7 @@ usersController.post('/create', async (req, res) => {
     await createUser(req, res);
 });
 
-usersController.post('/login', async (req, res) =>{
+usersController.post('/login', validateToken, async (req, res) =>{
     const username = req.body.loginUsername;
     if(!username || username === ''){
         return res.status(400).json({ message: 'Username Not Entered' });
@@ -97,7 +98,7 @@ usersController.post('/login', async (req, res) =>{
     await loginUser(req, res);
 });
 
-usersController.put('/edit/:username', async (req, res) => {
+usersController.put('/edit/:username', validateToken, async (req, res) => {
     
     const userToBeUpdated = await UserModel.findOne({ username: req.params.username });
     if (!userToBeUpdated) {
@@ -137,7 +138,7 @@ usersController.put('/edit/:username', async (req, res) => {
     await updateUser(req, res);
 });
 
-usersController.delete('/delete/:username', async (req, res) => {
+usersController.delete('/delete/:username', validateToken, async (req, res) => {
 
     await deleteUser(req, res);
 });

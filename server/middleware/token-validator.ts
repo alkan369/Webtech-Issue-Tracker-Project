@@ -17,7 +17,11 @@ export const validateToken = async (req: Request , res: Response, next: NextFunc
         // req.username = username;
         
 	} catch (err) {
-        res.status(403).json({message: 'Unable to verify token', ...err});
+        res.status(403).json({
+                                message: 'Unable to verify token',
+                                err
+                            });
+        return;
 	}
     
 	next();

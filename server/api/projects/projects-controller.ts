@@ -7,24 +7,25 @@ deleteProject,
 getById} from "../../database/methods/project.methods";
 import { validProjectPriorities, validProjectStatus } from "../../database/schemas/project.schema";
 import { TicketModel } from "../../database/models/ticket.model";
+import { validateToken } from "../../middleware/token-validator";
 
 const projectsController = Router();
 
-projectsController.get('/', async (req, res) => {
+projectsController.get('/', validateToken, async (req, res) => {
 
     await getAllProjects(req, res);
 });
 
-projectsController.get('/:id', async (req, res) => {
+projectsController.get('/:id', validateToken, async (req, res) => {
     await getById(req, res);
 });
 
-projectsController.get('/view_by_name/:projectName', async (req, res) => {
+projectsController.get('/view_by_name/:projectName', validateToken, async (req, res) => {
 
     await getProjectByName(req, res);
 });
 
-projectsController.get('/view_by_status/:status', async (req, res) =>{
+projectsController.get('/view_by_status/:status', validateToken, async (req, res) =>{
     const projectStatusIndex: number = validProjectStatus.indexOf(req.params.status);
     if(projectStatusIndex === -1){
         return res.status(400).json({'message': 'Invalid Project Status Input'});
@@ -33,7 +34,7 @@ projectsController.get('/view_by_status/:status', async (req, res) =>{
     await getProjectByStatus(req, res);
 })
 
-projectsController.post('/create', async (req, res) => {
+projectsController.post('/create', validateToken, async (req, res) => {
     if (req.body.projectName) {
         const project = await ProjectModel.findOne({ projectName: req.body.projectName });
         if (project) {
@@ -56,7 +57,7 @@ projectsController.post('/create', async (req, res) => {
     await createProject(req, res);
 });
 
-projectsController.put('/edit/:id', async (req, res) => {
+projectsController.put('/edit/:id', validateToken, async (req, res) => {
     const projectToBeUpdated = await ProjectModel.findById({ _id: req.params.id });
     if (!projectToBeUpdated) {
         return res.status(400).json({ message: 'No Project' });
@@ -89,7 +90,7 @@ projectsController.put('/edit/:id', async (req, res) => {
     await updateProject(req, res);
 });
 
-projectsController.delete('/delete/:projectName', async (req, res) => {
+projectsController.delete('/delete/:projectName', validateToken, async (req, res) => {
     
     await deleteProject(req, res);
 });
