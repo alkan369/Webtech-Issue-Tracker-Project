@@ -6,6 +6,7 @@ import { UserModel } from "../../database/models/user.model";
 import { getTicketByStatus, getTicketByProjectName, getTicketByTitle, 
     getTicketByAssignee, createTicket, updateTicket, deleteTicket, 
     getAllTickets, getTicketWithNoProject, getTicketNotAsigned, getById } from "../../database/methods/ticket.methods";
+import { validateToken } from "../../middleware/token-validator";
 
 const ticketsController = Router();
 
@@ -52,7 +53,7 @@ ticketsController.get('/view_by_status/:status', async (req, res) =>{
     await getTicketByStatus(req, res);
 })
 
-ticketsController.post('/create', async (req, res) => { 
+ticketsController.post('/create', validateToken, async (req, res) => { 
 
     if (req.body.title) {
         const ticket = await TicketModel.findOne({ title: req.body.title });

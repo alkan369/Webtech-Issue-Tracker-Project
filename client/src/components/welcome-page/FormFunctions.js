@@ -54,7 +54,7 @@ export function handleRegistration(navigate, registrationData) {
       alert('Welcome to IssueTracker!');
       
       const token = response.data.token;
-      // localStorage.setItem(token);
+      localStorage.setItem("token", token);
       navigate('/dashboard');
     })
     .catch((error) => {
@@ -69,7 +69,7 @@ export function handleLogin(navigate, loginData) {
       alert(`Welcome back ${loginData.loginUsername}!`);
 
       const token = response.data.token;
-      // localStorage.setItem(token);
+      localStorage.setItem("token", token);
       navigate('/dashboard');
     })
     .catch((error) => {
