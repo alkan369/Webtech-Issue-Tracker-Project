@@ -29,7 +29,7 @@ usersController.get('/view_by_email/:email', validateToken, async (req, res) =>{
     await getUserByEmail(req, res);
 });
 
-usersController.post('/create', validateToken, async (req, res) => {
+usersController.post('/create', async (req, res) => {
     
     if(!req.body.firstName || req.body.firstName === "" ){
         return res.status(400).json({ message: 'First Name Not Entered' });
@@ -84,7 +84,7 @@ usersController.post('/create', validateToken, async (req, res) => {
     await createUser(req, res);
 });
 
-usersController.post('/login', validateToken, async (req, res) =>{
+usersController.post('/login', async (req, res) =>{
     const username = req.body.loginUsername;
     if(!username || username === ''){
         return res.status(400).json({ message: 'Username Not Entered' });
