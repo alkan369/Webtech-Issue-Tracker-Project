@@ -9,7 +9,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    //Hangle token deletion from local/session storage
+    sessionStorage.removeItem("userToken")
     navigate("/");
   };
 

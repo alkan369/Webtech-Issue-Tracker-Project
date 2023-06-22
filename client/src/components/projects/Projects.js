@@ -16,14 +16,22 @@ const App = () => {
   const [editIssue, setEditIssue] = useState(initialIssue);
 
   const fetchProjectById = (id) => {
-    fetch(`http://localhost:3000/api/projects/${id}`)
+    fetch(`http://localhost:3000/api/projects/${id}`,{
+      headers:{
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setEditIssue(data));
   };
 
   /// Fetch projects from backend
   const fetchProjects = async () => {
-    fetch("http://localhost:3000/api/projects")
+    fetch("http://localhost:3000/api/projects",{
+      headers:{
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setIssues(data));
   };
@@ -35,6 +43,7 @@ const App = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
       },
       body: JSON.stringify(ticket),
     })
@@ -59,6 +68,7 @@ const App = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
       },
       body: JSON.stringify(project),
     })
@@ -79,6 +89,9 @@ const App = () => {
   const deleteProject = async (title) => {
     fetch(`http://localhost:3000/api/projects/delete/${title}`, {
       method: "DELETE",
+      headers:{
+          "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+        }
     })
       .then((response) => response.json().then((data) => ({ code: response.status, data })))
       .then((result) => {

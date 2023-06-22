@@ -19,13 +19,21 @@ const App = () => {
   const [editIssue, setEditIssue] = useState(initialIssue);
 
   const fetchTicketById = (id) => {
-    fetch(`http://localhost:3000/api/tickets/${id}`)
+    fetch(`http://localhost:3000/api/tickets/${id}`,{
+      headers:{
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setEditIssue(data));
   };
 
   const fetchTickets = async () => {
-    fetch("http://localhost:3000/api/tickets")
+    fetch("http://localhost:3000/api/tickets",{
+      headers:{
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+      }
+    })
       .then((response) => response.json())
       .then((data) => setIssues(data));
   };
@@ -35,6 +43,7 @@ const App = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
       },
       body: JSON.stringify(ticket),
     })
@@ -56,6 +65,7 @@ const App = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
       },
       body: JSON.stringify(ticket),
     })
@@ -79,6 +89,9 @@ const App = () => {
   const deleteTicket = async (title) => {
     fetch(`http://localhost:3000/api/tickets/delete/${title}`, {
       method: "DELETE",
+      headers:{
+        "Authorization": `Bearer ${sessionStorage.getItem("userToken")}`
+      }
     })
       .then((response) => response.json())
       .then((data) => {
